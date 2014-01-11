@@ -6,35 +6,49 @@
 //  Copyright (c) 2014 Efrain Astudillo. All rights reserved.
 //
 
-#include <iostream>
-#include <opencv2/opencv.hpp>
+#include "AIFaceDetection.h"
+#include "AIDataSet.h"
 #include <Eigen/Dense>
+#include <boost/filesystem/operations.hpp>
+#include <opencv2/core/eigen.hpp>
+//#include <boost/filesystem/fstream.hpp>
 
 
+namespace fs = boost::filesystem;
+typedef std::multimap<std::time_t, fs::path> result_set_t;
 
 int main(int argc, const char * argv[])
 {
-    Eigen::MatrixXd m(2,2);
-    m(0,0) = 3;
-    m(1,0) = 2.5;
-    m(0,1) = -1;
-    m(1,1) = m(1,0) + m(0,1);
-    std::cout << "Here is the matrix m:\n" << m << std::endl;
+                                  
+    AIDataSet d;
     
+    //d.read_images();
     
+    AIFaceDetection ai;
+    Eigen::Matrix3d m = Eigen::Matrix3d::Random();
+    std::cout << "Here is the matrix m:\n" << m.mean() << std::endl;
+
+    cv::Mat img = cv::imread("/Users/efrainastudillo/scikit_learn_data/Adrien_Brody/Adrien_Brody_0004.jpg");
+
+    cv::imshow("Imagen", img);
+    if (d._images.size()>0) {
+        cv::imshow("Other image", d._images[2]);
+    }
+    d.save_images("/Users/efrainastudillo/Documents/Development/file.csv");
+    //std::cout<<"Eigen:: "<<conv<<std::endl;
+    cv::waitKey();
     
+    /*
     cv::VideoCapture *capture = new cv::VideoCapture(0);
     
-    if (capture->isOpened()) {
-        std::cout<<"Opened"<<std::endl;
-    }
-    else
+    if (!capture->isOpened()) {
         return 0;
+    }
     
     while (true) {
         char key = cv::waitKey(2);
         if (key == 27) {
-            return 0;
+            break;
         }
         cv::Mat img;
         capture->read(img);
@@ -44,10 +58,11 @@ int main(int argc, const char * argv[])
         
         //std::cout<<"loop";
     }
-    cv::Mat image;
     
+    cv::destroyAllWindows();
+     */
     // insert code here...
-    std::cout << "Hello, World!\n";
+    std::cout << "cleaned all windows!\n";
     return 0;
 }
 
