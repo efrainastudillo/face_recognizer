@@ -31,22 +31,27 @@ AIDataSet::AIDataSet(std::string image_path,std::string classifier_path){
 AIDataSet::~AIDataSet(){
 
 }
+
+
 void AIDataSet::save_images(std::string filename){
     std::ofstream fout(filename);
-    cv::Mat m = cv::Mat::zeros(cv::Size(10,10), CV_8UC1);
+    cv::Mat m = cv::Mat::zeros(cv::Size(5,5), CV_8UC1);
     if(!fout)
     {
         std::cout<<"File Not Opened"<<std::endl;  return;
     }
     
-    for(int i=0; i<m.rows; i++)
-    {
-        for(int j=0; j<m.cols; j++)
+    if( m.channels() == 1){
+        for(int i=0; i<m.rows; i++)
         {
-            fout<<m.at<uint>(i,j)<<",";
+            for(int j=0; j<m.cols; j++)
+            {
+                uint pixel = m.at<uchar>(i,j);
+                fout<<pixel<<",";
+            }
         }
-        
     }
+    
     fout<<std::endl;
     fout.close();
 }
