@@ -22,3 +22,11 @@
 *.suo
 *.vcxproj
 *.filters
+*.user
+*.pdb
+*.idb
+*.obj
+*.tlog
+*.log
+*.ilk
+*.exe
