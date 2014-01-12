@@ -27,8 +27,8 @@ enum AIStatus{AI_STATUS_OK,
 #define __HAARCASCADE_PATH__ "/Users/efrainastudillo/Documents/Development/opencv/data/haarcascades/haarcascade_frontalface_alt.xml"
 
 #elif __PETER__ //Pedro Lucas Path
-#define __IMAGES_PATH__ "/path/pedro/lucas"
-#define __HAARCASCADE_PATH__ ""
+#define __IMAGES_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/images/"
+#define __HAARCASCADE_PATH__ "C:/opencv/data/haarcascades/haarcascade_frontalface_alt.xml"
 
 #elif __GERMAN__ // German Villalba Path
 #define __IMAGES_PATH__ "/path/german/villalba"
