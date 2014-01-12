@@ -31,24 +31,42 @@ AIDataSet::AIDataSet(std::string image_path,std::string classifier_path){
 AIDataSet::~AIDataSet(){
 
 }
-void AIDataSet::save_images(std::string filename){
+/**
+    Save images to a file. Each image is contained in a row of the file
+ */
+AIStatus AIDataSet::save_images(std::string filename){
     std::ofstream fout(filename);
-    cv::Mat m = cv::Mat::zeros(cv::Size(968,709), CV_8UC1);
     if(!fout)
     {
-        std::cout<<"File Not Opened"<<std::endl;  return;
+        LOG("File Not Opened")
+        return AIStatus::AI_STATUS_ERROR;
     }
-	
-    for(int i=0; i<m.rows; i++)
+    if (_images.empty())
     {
-        for(int j=0; j<m.cols; j++)
-        {
-            fout<<m.at<unsigned char>(i,j)<<",";
-        }
-		fout << std::endl;
+        LOG("not found images to save")
+        return AIStatus::AI_STATUS_NOT_IMAGES;
     }
+    cv::vector<cv::Mat>::iterator iter = _images.begin();
+    while (iter != _images.end())
+    {
+        if( (*iter).channels() == 1)
+        {
+            for(int i=0; i<(*iter).rows; i++)
+            {
+                for(int j=0; j<(*iter).cols; j++)
+                {
+                    unsigned int pixel = (*iter).at<uchar>(i,j);
+                    fout<<pixel<<",";
+                }
+            }
+        }
+        iter++;
+    }
+    
     fout<<std::endl;
     fout.close();
+    
+    return AIStatus::AI_STATUS_OK;
 }
 
 AIStatus AIDataSet::load_data(){

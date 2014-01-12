@@ -15,27 +15,25 @@
 
 
 namespace fs = boost::filesystem;
-typedef std::multimap<std::time_t, fs::path> result_set_t;
 
 int main(int argc, const char * argv[])
 {
                                   
     AIDataSet d;
+    d.read_images();
+    //"/Users/efrainastudillo/Documents/Development/file.csv"   ==> efrain
+    // put your path                                            ==> pedro
+    // put yout path                                            ==> daniel
+    // since we will be constantly changing the path, we could forget our path
+    // and avoid lose time finding again over again.
+    d.save_images("/Users/efrainastudillo/Documents/Development/file.csv");
     
-    //d.read_images();
-    
-    AIFaceDetection ai;
-    Eigen::Matrix3d m = Eigen::Matrix3d::Random();
-    std::cout << "Here is the matrix m:\n" << m.mean() << std::endl;
-
     cv::Mat img = cv::imread("/Users/efrainastudillo/scikit_learn_data/Adrien_Brody/Adrien_Brody_0004.jpg");
 
     cv::imshow("Imagen", img);
     if (d._images.size()>0) {
         cv::imshow("Other image", d._images[2]);
     }
-    d.save_images("/Users/efrainastudillo/Documents/Development/file.csv");
-    //std::cout<<"Eigen:: "<<conv<<std::endl;
     cv::waitKey();
     
     /*

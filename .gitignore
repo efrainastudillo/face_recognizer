@@ -4,6 +4,8 @@
 *.o
 *.xcodeproj
 *.pbxproj
+FaceRecognizer.xcodeproj/
+*.exe
 
 # Compiled Dynamic libraries
 *.so
