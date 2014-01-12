@@ -13,3 +13,12 @@
 *.lai
 *.la
 *.a
+
+# Visual studio files
+
+*.opensdf
+*.sdf
+*.sln
+*.suo
+*.vcxproj
+*.filters

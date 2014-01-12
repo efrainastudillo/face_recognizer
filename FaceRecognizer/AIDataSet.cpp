@@ -33,19 +33,19 @@ AIDataSet::~AIDataSet(){
 }
 void AIDataSet::save_images(std::string filename){
     std::ofstream fout(filename);
-    cv::Mat m = cv::Mat::zeros(cv::Size(10,10), CV_8UC1);
+    cv::Mat m = cv::Mat::zeros(cv::Size(968,709), CV_8UC1);
     if(!fout)
     {
         std::cout<<"File Not Opened"<<std::endl;  return;
     }
-    
+	
     for(int i=0; i<m.rows; i++)
     {
         for(int j=0; j<m.cols; j++)
         {
-            fout<<m.at<uint>(i,j)<<",";
+            fout<<m.at<unsigned char>(i,j)<<",";
         }
-        
+		fout << std::endl;
     }
     fout<<std::endl;
     fout.close();
