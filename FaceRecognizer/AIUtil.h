@@ -8,7 +8,17 @@
 
 #ifndef FaceRecognizer_AIUtil_h
 #define FaceRecognizer_AIUtil_h
-enum AIStatus{AI_STATUS_OK,AI_STATUS_ERROR,AI_STATUS_UNKNOWN};
+
+#include <iostream>
+
+enum AIStatus{AI_STATUS_OK,
+    AI_STATUS_ERROR,
+    AI_STATUS_UNKNOWN,
+    AI_STATUS_NOT_IMAGES
+};
+
+#define LOG(msg) (std::cout<<"[ AI ] => "<<msg<<std::endl);
+
 #define Eigen2MatCV()
 
 #endif
