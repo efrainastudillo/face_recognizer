@@ -28,7 +28,7 @@ public:
     void processing_image(cv::Mat&);
     AIStatus save_images(std::string);
     
-    AIStatus load_data();
+    AIStatus load_data(std::string);
     void shuffle();
     
 private:

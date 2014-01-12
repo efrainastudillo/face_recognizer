@@ -12,20 +12,33 @@
 #include <fstream>
 
 AIDataSet::AIDataSet(){
-    std::cout<<"Data Set..."<<std::endl;
-    _path = fs::path("/Users/efrainastudillo/scikit_learn_data/");
+    
+    LOG("My Image Path is: "<<__IMAGES_PATH__)
+    LOG("My Classifier Path is: "<<__HAARCASCADE_PATH__)
+    _path = fs::path(__IMAGES_PATH__);
     _classifier = cv::CascadeClassifier();
-    _classifier.load("/Users/efrainastudillo/Documents/Development/opencv/data/haarcascades/haarcascade_frontalface_alt.xml");
+    
+    if(!_classifier.load(__HAARCASCADE_PATH__))
+    {
+        LOG("haarcascade classifier file not found")
+    }
     
     _images = cv::vector<cv::Mat>();
+    
+    LOG("configuring classifer and images path")
 }
 
 AIDataSet::AIDataSet(std::string image_path,std::string classifier_path){
     _path = fs::path(image_path);
     _classifier = cv::CascadeClassifier();
-    _classifier.load(classifier_path);
+    if(!_classifier.load(classifier_path))
+    {
+        LOG("haarcascade classifier file not found")
+    }
     
     _images = cv::vector<cv::Mat>();
+    
+    LOG("configuring classifer and images path")
 }
 
 AIDataSet::~AIDataSet(){
@@ -69,7 +82,18 @@ AIStatus AIDataSet::save_images(std::string filename){
     return AIStatus::AI_STATUS_OK;
 }
 
-AIStatus AIDataSet::load_data(){
+AIStatus AIDataSet::load_data(std::string filename){
+    std::ifstream data_images(filename);
+    if (!data_images.is_open()) {
+        LOG("file cant open to read data of the images")
+        return AIStatus::AI_STATUS_CANT_OPEN_FILE;
+    }
+    
+    std::string value;
+    
+    if (data_images.good()) {
+       // std::getline(data_images, value, ",");
+    }
     
     return AIStatus::AI_STATUS_OK;
 }
