@@ -18,17 +18,19 @@ namespace fs = boost::filesystem;
 
 int main(int argc, const char * argv[])
 {
-                                  
+    
+
+    
     AIDataSet d;
-    d.read_images();
+    //d.read_images();
     //"/Users/efrainastudillo/Documents/Development/file.csv"   ==> efrain
     // put your path                                            ==> pedro
     // put yout path                                            ==> daniel
     // since we will be constantly changing the path, we could forget our path
     // and avoid lose time finding again over again.
-    d.save_images("/Users/efrainastudillo/Documents/Development/file.csv");
+    //d.save_images("/Users/efrainastudillo/Documents/Development/file.csv");
     
-    cv::Mat img = cv::imread("/Users/efrainastudillo/scikit_learn_data/Adrien_Brody/Adrien_Brody_0004.jpg");
+    cv::Mat img = cv::imread("/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/images/Adrien_Brody/Adrien_Brody_0004.jpg");
 
     cv::imshow("Imagen", img);
     if (d._images.size()>0) {
