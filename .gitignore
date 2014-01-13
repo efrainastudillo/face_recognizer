@@ -15,3 +15,20 @@ FaceRecognizer.xcodeproj/
 *.lai
 *.la
 *.a
+
+# Visual studio files
+
+*.opensdf
+*.sdf
+*.sln
+*.suo
+*.vcxproj
+*.filters
+*.user
+*.pdb
+*.idb
+*.obj
+*.tlog
+*.log
+*.ilk
+*.exe
