@@ -18,6 +18,7 @@ FaceRecognizer.xcodeproj/
 
 # Visual studio files
 
+FaceRecognizer/FaceRecognizer/Debug/
 *.opensdf
 *.sdf
 *.sln
