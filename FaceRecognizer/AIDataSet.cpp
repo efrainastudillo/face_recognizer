@@ -1,5 +1,5 @@
 //
-//  DataSet.cpp
+//  AIDataSet.cpp
 //  FaceRecognizer
 //
 //  Created by Efrain Astudillo on 1/6/14.
@@ -23,7 +23,8 @@ AIDataSet::AIDataSet(){
         LOG("haarcascade classifier file not found")
     }
     
-    _images = cv::vector<cv::Mat>();
+    _names  = std::map<int, std::string>();
+    _images = std::map<int,cv::Mat>();
     
     LOG("configuring classifer and images path")
 }
@@ -36,7 +37,8 @@ AIDataSet::AIDataSet(std::string image_path,std::string classifier_path){
         LOG("haarcascade classifier file not found")
     }
     
-    _images = cv::vector<cv::Mat>();
+    _names  = std::map<int, std::string>();
+    _images = std::map<int,cv::Mat>();
     
     LOG("configuring classifer and images path")
 }
@@ -44,9 +46,7 @@ AIDataSet::AIDataSet(std::string image_path,std::string classifier_path){
 AIDataSet::~AIDataSet(){
 
 }
-/**
-    Save images to a file. Each image is contained in a row of the file
- */
+
 AIStatus AIDataSet::save_images(std::string filename){
     std::ofstream fout(filename);
     if(!fout)
@@ -56,19 +56,21 @@ AIStatus AIDataSet::save_images(std::string filename){
     }
     if (_images.empty())
     {
-        LOG("not found images to save")
+        LOG("not found images to save, < _images std::map > is empty")
         return AIStatus::AI_STATUS_NOT_IMAGES;
     }
-    cv::vector<cv::Mat>::iterator iter = _images.begin();
+    std::map<int,cv::Mat>::iterator iter = _images.begin();
     while (iter != _images.end())
     {
-        if( (*iter).channels() == 1)
+        if( iter->second.channels() == 1)
         {
-            for(int i=0; i<(*iter).rows; i++)
+            fout<<iter->first<<",";
+            
+            for(int i=0; i<iter->second.rows; i++)
             {
-                for(int j=0; j<(*iter).cols; j++)
+                for(int j=0; j<iter->second.cols; j++)
                 {
-                    unsigned int pixel = (*iter).at<uchar>(i,j);
+                    unsigned int pixel = iter->second.at<uchar>(i,j);
                     fout<<pixel<<",";
                 }
             }
@@ -78,6 +80,9 @@ AIStatus AIDataSet::save_images(std::string filename){
     
     fout<<std::endl;
     fout.close();
+    
+    //remove all data to free memory
+    _images.clear();
     
     return AIStatus::AI_STATUS_OK;
 }
@@ -90,17 +95,31 @@ AIStatus AIDataSet::load_data(std::string filename){
     }
     
     std::string value;
+    //std::istringstream line_stream;
+    std::string pix;
     
-    if (data_images.good()) {
-       // std::getline(data_images, value, ",");
+    if (data_images.good())
+    {
+        while (std::getline(data_images,value,'\n'))
+        {
+            std::istringstream line_stream;
+            line_stream.str(value);
+            //LOG(value)      //debug print
+        
+            while (std::getline(line_stream, pix, ','))
+            {
+                //LOG(pix);    // to test whether is getting the pixel or not
+                
+                /* need to build a matrix or vector with Eigen or whathever you want*/
+            }
+            
+        }
+    
     }
     
     return AIStatus::AI_STATUS_OK;
 }
 
-
-//Processing the image <bold>image</bold>, convert to gray-scale, find a face into it and extract the ROI
-//then resize the image to normalize the same size all images
 void AIDataSet::processing_image(cv::Mat &image){
     //cv::Mat image = tmp.clone();
     //convert captured image to gray scale and equalize
@@ -112,7 +131,7 @@ void AIDataSet::processing_image(cv::Mat &image){
     
     //find faces and store them in the vector array
     _classifier.detectMultiScale(image, faces,1.1, 2, CV_HAAR_FIND_BIGGEST_OBJECT|CV_HAAR_SCALE_IMAGE, cv::Size(30, 30));
-    std::cout<<"Faces: "<<faces.size()<<std::endl;
+    LOG("Faces detected: "<<faces.size())
     //extract roi containing the face if there more than one, only the first is keeping in memory
     //this can be manipulate capturing the image more accurate posible
     if(faces.size()>0){
@@ -137,19 +156,32 @@ AIStatus AIDataSet::read_images(){
     }
     
     std::cout<<"Directory exist..."<<std::endl;
-    for (fs::directory_iterator _parent_dir(_path); _parent_dir != _end; _parent_dir++) {
-        if (fs::is_directory(_parent_dir->status())) {
+    
+    //class identifier, link between index and name
+    int class_identifier = 0;
+    
+    //this loop get the folder name of each person
+    for (fs::directory_iterator _parent_dir(_path); _parent_dir != _end; _parent_dir++)
+    {
+        if (fs::is_directory(_parent_dir->status()))
+        {
+            //this loop get the filename of the each image into the folder
             for (fs::directory_iterator _children_dir(fs::path(_path / _parent_dir->path().stem()));
-                _children_dir != _end; _children_dir ++) {
+                _children_dir != _end; _children_dir ++)
+            {
             
                 //show whether is a file and not a directory
-                if (fs::is_regular_file(_children_dir->status())) {
+                if (fs::is_regular_file(_children_dir->status()))
+                {
                     //std::cout<<"dir: "<<_children_dir->path().filename()<<std::endl;
                     cv::Mat imagen = cv::imread(_children_dir->path().string());
                     processing_image(imagen);
-                    _images.push_back(imagen);
+                    _images.insert(std::make_pair(class_identifier, imagen));
+                    
                 }
             }
+            _names.insert(std::make_pair(class_identifier, _parent_dir->path().filename().string()));
+            class_identifier += 1;
         }
     }
 

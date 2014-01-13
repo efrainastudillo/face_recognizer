@@ -18,12 +18,10 @@ enum AIStatus{AI_STATUS_OK,
     AI_STATUS_CANT_OPEN_FILE
 };
 
-
-
 #define LOG(msg) (std::cout<<"[ AI ] => "<<msg<<std::endl);
 
 #ifdef __APPLE__
-#define __IMAGES_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProject/FaceRecognizer/FaceRecognizer/images/"
+#define __IMAGES_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/images/"
 #define __HAARCASCADE_PATH__ "/Users/efrainastudillo/Documents/Development/opencv/data/haarcascades/haarcascade_frontalface_alt.xml"
 
 #elif __PETER__ //Pedro Lucas Path
@@ -39,7 +37,5 @@ enum AIStatus{AI_STATUS_OK,
 #define __HAARCASCADE_PATH__ ""
 
 #endif
-
-#define Eigen2MatCV()
 
 #endif
