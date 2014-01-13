@@ -9,11 +9,13 @@
 #ifndef FaceRecognizer_DataSet_h
 #define FaceRecognizer_DataSet_h
 
+
+#include "AIUtil.h"
+
 #include <iostream>
 #include <opencv2/opencv.hpp>
-
+#include <fstream>
 #include <Eigen/Dense>
-#include "AIUtil.h"
 #include <boost/filesystem/operations.hpp>
 
 namespace fs = boost::filesystem;
