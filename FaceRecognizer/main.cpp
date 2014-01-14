@@ -11,29 +11,26 @@
 #include <Eigen/Dense>
 #include <boost/filesystem/operations.hpp>
 #include <opencv2/core/eigen.hpp>
-//#include <boost/filesystem/fstream.hpp>
 
 
 namespace fs = boost::filesystem;
 
 int main(int argc, const char * argv[])
 {
-                                  
-    AIDataSet d;
-    d.read_images();
-    //"/Users/efrainastudillo/Documents/Development/file.csv"   ==> efrain
-    // put your path                                            ==> pedro
-    // put yout path                                            ==> daniel
-    // since we will be constantly changing the path, we could forget our path
-    // and avoid lose time finding again over again.
-    d.save_images("/Users/efrainastudillo/Documents/Development/file.csv");
     
-    cv::Mat img = cv::imread("/Users/efrainastudillo/scikit_learn_data/Adrien_Brody/Adrien_Brody_0004.jpg");
+    AIDataSet d;
+    d.load_data("/Users/efrainastudillo/Documents/file.csv");
+    
+    if(d.read_images()!= AIStatus::AI_STATUS_OK){
+        LOG("Error reading images")
+    }
+    
+    d.save_images("/Users/efrainastudillo/Documents/Development/file.csv");
+    LOG(d._names.size())
+    LOG(d._names.at(2))
+    cv::Mat img = cv::imread("/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/images/Adrien_Brody/Adrien_Brody_0004.jpg");
 
     cv::imshow("Imagen", img);
-    if (d._images.size()>0) {
-        cv::imshow("Other image", d._images[2]);
-    }
     cv::waitKey();
     
     /*
