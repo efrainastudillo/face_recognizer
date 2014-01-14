@@ -3,11 +3,82 @@
 
 using namespace Eigen;
 
-void Test(){
-	
+
+AITraining::AITraining(){
+
 }
 
-AITraining::TrainingValue& pca(AITraining::TrainingValue& training, MatrixXd& X, VectorXd& y, int numComponents = 0){
+AITraining::~AITraining(){
+
+}
+
+void AITraining::Test(){
+	Eigen::MatrixXd X(382, 28);
+	Eigen::VectorXd y(382);
+	std::cout << "Reading !";
+	Read_CSV(X, y, "D:/AIProject/Tests/gestures_file_trainning.csv");
+	//std::cout << y;
+	std::cout << "Training !";
+	AITraining::TrainingValue training;
+
+	pca(training, X , y);
+
+	std::cout << "Writing !";
+	Write_CSV(X, y, "D:/AIProject/Tests/testCsv.csv");
+}
+
+void AITraining::Read_CSV(Eigen::MatrixXd& X, Eigen::VectorXd& y, std::string filename){
+
+	std::ifstream data(filename);
+	if (!data.is_open()) {
+		LOG("file cant open to read data ")
+		return;
+	}
+
+	std::string line;
+	int i = 0, j = 0;
+	while (std::getline(data, line))
+	{
+		std::stringstream  lineStream(line);
+		std::string        cell;
+		j = 0;
+		while (std::getline(lineStream, cell, ','))
+		{
+			// You have a cell!!!!
+			if (j == 0){
+				y(i) = std::stoi(cell);
+			}
+			else{
+				X(i, j - 1) = std::stod(cell);
+			}
+			++j;
+		}
+		++i;
+	}
+	data.close();
+}
+
+
+void AITraining::Write_CSV(Eigen::MatrixXd& X, Eigen::VectorXd& y, std::string filename){
+	std::ofstream fout(filename);
+	if (!fout)
+	{
+		LOG("File Not Opened")
+			return;
+	}
+	
+	for (int i = 0; i < X.rows(); i++){
+		fout << y(i) << ",";
+		for (int j = 0; j < X.cols(); j++){
+			fout << X(i, j) << ",";
+		}
+		fout << std::endl;
+	}
+
+	fout.close();
+}
+
+void AITraining::pca(AITraining::TrainingValue& training, MatrixXd& X, VectorXd& y, int numComponents){
 
 	int n = X.rows();
 	int d = X.cols();
@@ -64,16 +135,13 @@ AITraining::TrainingValue& pca(AITraining::TrainingValue& training, MatrixXd& X,
 	std::sort(collectionPairs.begin(), collectionPairs.end(), comparatorPairEigenValue);
 
 	MatrixXd newEigenVectors(training.eigenVectors.rows(), training.eigenVectors.cols());
-	for (int i = 0; i < numComponents; ++i){// Orcer eigen vectors And select components
+	for (int i = 0; i < training.eigenVectors.cols(); ++i){// Orcer eigen vectors And select components
 		newEigenVectors.col(i) = training.eigenVectors.col(collectionPairs[i].second);
 	}
 	training.eigenVectors.resize(training.eigenVectors.rows(), numComponents);
 	training.eigenValues.resize(numComponents);
 
 	//Select Components
-	
-
-	return training;
 }
 
 bool comparatorPairEigenValue(const std::pair<double, int>& l,const std::pair<double, int>& r)

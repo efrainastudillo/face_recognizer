@@ -8,6 +8,7 @@
 
 #include "AIFaceDetection.h"
 #include "AIDataSet.h"
+#include "AITraining.h"
 #include <Eigen/Dense>
 #include <boost/filesystem/operations.hpp>
 #include <opencv2/core/eigen.hpp>
@@ -17,7 +18,7 @@ namespace fs = boost::filesystem;
 
 int main(int argc, const char * argv[])
 {
-    
+	/*
     AIDataSet d;
     d.load_data("/Users/efrainastudillo/Documents/file.csv");
     
@@ -32,7 +33,7 @@ int main(int argc, const char * argv[])
 
     cv::imshow("Imagen", img);
     cv::waitKey();
-    
+    */
     /*
     cv::VideoCapture *capture = new cv::VideoCapture(0);
     
@@ -57,7 +58,14 @@ int main(int argc, const char * argv[])
     cv::destroyAllWindows();
      */
     // insert code here...
+
+
+	AITraining training; 
+
+	training.Test();
+
     std::cout << "cleaned all windows!\n";
+	std::cin.get();
     return 0;
 }
 
