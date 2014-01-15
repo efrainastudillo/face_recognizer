@@ -64,6 +64,11 @@ int main(int argc, const char * argv[])
 
 	training.Test();
 
+	//Eigen::RowVectorXd rv(3);
+	//rv << 1, 2, 3;
+
+	//std::cout << rv.array().pow(2).sum();
+
     std::cout << "cleaned all windows!\n";
 	std::cin.get();
     return 0;

@@ -13,21 +13,30 @@ AITraining::~AITraining(){
 }
 
 void AITraining::Test(){
-	Eigen::MatrixXd X(382, 28);
-	Eigen::VectorXd y(382);
+	Eigen::MatrixXd X(379, 28);
+	Eigen::VectorXi y(379);
+
+	Eigen::MatrixXd Xtest(379, 28);
+	Eigen::VectorXi Ytest(379);
+
 	std::cout << "Reading !";
 	Read_CSV(X, y, "D:/AIProject/Tests/gestures_file_trainning.csv");
-	//std::cout << y;
-	std::cout << "Training !";
-	AITraining::TrainingValue training;
+	Read_CSV(Xtest, Ytest, "D:/AIProject/Tests/gestures_file_test.csv");
+	
+	std::cout << "Training ! \n";
+	AITraining::TrainingModel trainingModel;
+	
+	AITraining::Train(trainingModel, X, y);
+	//std::cout << trainingModel.W;
+	int minClass = AITraining::predict(Xtest.row(0), trainingModel, 0);
 
-	pca(training, X , y);
-
-	std::cout << "Writing !";
-	Write_CSV(X, y, "D:/AIProject/Tests/testCsv.csv");
+	std::cout << "Prediction : " << minClass << std::endl;
+	//std::cin.get();
+	std::cout << "Writing ! \n";
+	Write_CSV(trainingModel.W, trainingModel.y, "D:/AIProject/Tests/matrixW.csv");
 }
 
-void AITraining::Read_CSV(Eigen::MatrixXd& X, Eigen::VectorXd& y, std::string filename){
+void AITraining::Read_CSV(Eigen::MatrixXd& X, Eigen::VectorXi& y, std::string filename){
 
 	std::ifstream data(filename);
 	if (!data.is_open()) {
@@ -58,8 +67,7 @@ void AITraining::Read_CSV(Eigen::MatrixXd& X, Eigen::VectorXd& y, std::string fi
 	data.close();
 }
 
-
-void AITraining::Write_CSV(Eigen::MatrixXd& X, Eigen::VectorXd& y, std::string filename){
+void AITraining::Write_CSV(Eigen::MatrixXd& X, Eigen::VectorXi& y, std::string filename){
 	std::ofstream fout(filename);
 	if (!fout)
 	{
@@ -78,7 +86,63 @@ void AITraining::Write_CSV(Eigen::MatrixXd& X, Eigen::VectorXd& y, std::string f
 	fout.close();
 }
 
-void AITraining::pca(AITraining::TrainingValue& training, MatrixXd& X, VectorXd& y, int numComponents){
+
+double AITraining::EuclideanDistance(const Eigen::RowVectorXd& P, const Eigen::RowVectorXd& Q){
+	return sqrt((P - Q).array().pow(2).sum());
+}
+double AITraining::CosineDistance(const Eigen::RowVectorXd& P, const Eigen::RowVectorXd& Q){
+	return  - (P * Q.transpose()).sum() / sqrt(((P.transpose() * P) *  (Q.transpose() * Q)).sum());	
+}
+
+int AITraining::predict(const Eigen::RowVectorXd& X, AITraining::TrainingModel& trainingModel, int distanceType){
+	double minDist = std::numeric_limits<double>::max();
+	int minClass = -1;
+
+	RowVectorXd Q;
+	project(Q, trainingModel.W, X, trainingModel.mu);
+
+	for (std::vector<RowVectorXd>::size_type i = 0; i != trainingModel.projections.size(); ++i){
+		double dist;
+
+		switch (distanceType){
+		case 0:
+			dist = EuclideanDistance(trainingModel.projections[i], Q);
+			break;
+		case 1:
+			dist = CosineDistance(trainingModel.projections[i], Q);
+			break;
+		default:
+			dist = 0;
+			break;
+		}
+			
+		if (dist < minDist){
+			minDist = dist;
+			minClass = trainingModel.y(i);
+		}
+	}
+	return minClass;
+}
+
+void AITraining::Train(AITraining::TrainingModel& trainingModel, const Eigen::MatrixXd& X, const Eigen::VectorXi& y){
+	
+	AITraining::TrainingValue training;
+	pca(training, X, y);
+
+	trainingModel.W = training.eigenVectors;
+	trainingModel.y = y;
+	trainingModel.mu = training.mu;
+	trainingModel.projections = std::vector<RowVectorXd>();
+
+	RowVectorXd projection(X.cols());
+	for (int i = 0; i < X.rows(); ++i){
+		project(projection, trainingModel.W, X.row(i), trainingModel.mu);
+		trainingModel.projections.push_back(projection);
+	}
+	
+}
+
+void AITraining::pca(AITraining::TrainingValue& training, const MatrixXd& X, const VectorXi& y, int numComponents){
 
 	int n = X.rows();
 	int d = X.cols();
@@ -94,8 +158,10 @@ void AITraining::pca(AITraining::TrainingValue& training, MatrixXd& X, VectorXd&
 	}
 	training.mu = training.mu / n;
 
+	MatrixXd Xw = X;
+
 	for (int i = 0; i < n; i++){
-		X.row(i) = X.row(i) - training.mu;
+		Xw.row(i) = X.row(i) - training.mu;
 	}
 	// end calculate mean
 
@@ -103,20 +169,20 @@ void AITraining::pca(AITraining::TrainingValue& training, MatrixXd& X, VectorXd&
 	
 
 	if (n > d){
-		C = X.transpose() * X;		
+		C = Xw.transpose() * Xw;		
 		SelfAdjointEigenSolver<MatrixXd> eigensolver(C);
 		//if (eigensolver.info() != Success) abort();
 		training.eigenValues = eigensolver.eigenvalues();
 		training.eigenVectors = eigensolver.eigenvectors();
 	}
 	else{
-		C = X * X.transpose();
+		C = Xw * Xw.transpose();
 		SelfAdjointEigenSolver<MatrixXd> eigensolver(C);
 		//if (eigensolver.info() != Success) abort();
 		training.eigenValues = eigensolver.eigenvalues();
 		training.eigenVectors = eigensolver.eigenvectors();
 
-		training.eigenVectors = X.transpose() * training.eigenVectors;
+		training.eigenVectors = Xw.transpose() * training.eigenVectors;
 
 		for (int i = 0; i < n; ++i){
 			training.eigenVectors.col(i) = training.eigenVectors.col(i) / training.eigenVectors.col(i).norm();
@@ -143,6 +209,14 @@ void AITraining::pca(AITraining::TrainingValue& training, MatrixXd& X, VectorXd&
 
 	//Select Components
 }
+void AITraining::project(Eigen::RowVectorXd& projection, const Eigen::MatrixXd& W, const Eigen::MatrixXd& X, Eigen::RowVectorXd mu){
+	Eigen::MatrixXd Xw = X;
+	for (int i = 0; i < X.rows(); i++){
+		Xw.row(i) = X.row(i) - mu;
+	}
+	projection = Xw * W;
+}
+
 
 bool comparatorPairEigenValue(const std::pair<double, int>& l,const std::pair<double, int>& r)
 {
