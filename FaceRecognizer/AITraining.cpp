@@ -28,7 +28,7 @@ void AITraining::Test(){
 	
 	AITraining::Train(trainingModel, X, y);
 	//std::cout << trainingModel.W;
-	int minClass = AITraining::predict(Xtest.row(0), trainingModel, 0);
+	int minClass = AITraining::predict(Xtest.row(2), trainingModel, 0);
 
 	std::cout << "Prediction : " << minClass << std::endl;
 	//std::cin.get();
@@ -174,6 +174,7 @@ void AITraining::pca(AITraining::TrainingValue& training, const MatrixXd& X, con
 		//if (eigensolver.info() != Success) abort();
 		training.eigenValues = eigensolver.eigenvalues();
 		training.eigenVectors = eigensolver.eigenvectors();
+
 	}
 	else{
 		C = Xw * Xw.transpose();
@@ -203,11 +204,20 @@ void AITraining::pca(AITraining::TrainingValue& training, const MatrixXd& X, con
 	MatrixXd newEigenVectors(training.eigenVectors.rows(), training.eigenVectors.cols());
 	for (int i = 0; i < training.eigenVectors.cols(); ++i){// Orcer eigen vectors And select components
 		newEigenVectors.col(i) = training.eigenVectors.col(collectionPairs[i].second);
+		training.eigenValues(i) = collectionPairs[i].first;
 	}
-	training.eigenVectors.resize(training.eigenVectors.rows(), numComponents);
-	training.eigenValues.resize(numComponents);
+	
+	training.eigenVectors = newEigenVectors;
+	if (numComponents > training.eigenVectors.cols())
+		numComponents = training.eigenVectors.cols();
+	training.eigenVectors.conservativeResize(training.eigenVectors.rows(), numComponents);
+	training.eigenValues.conservativeResize(numComponents);
+	//std::cout << training.eigenValues;
+	//Select Components	
+	//VectorXi Y = y;
+	//Write_CSV(training.eigenVectors, Y, "D:/AIProject/Tests/eigenVectors.csv");
 
-	//Select Components
+	
 }
 void AITraining::project(Eigen::RowVectorXd& projection, const Eigen::MatrixXd& W, const Eigen::MatrixXd& X, Eigen::RowVectorXd mu){
 	Eigen::MatrixXd Xw = X;
