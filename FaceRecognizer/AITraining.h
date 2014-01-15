@@ -46,7 +46,15 @@ class AITraining{
 
 		//Algorithms for AI technique
 
+		
+		// PCA
 		void AITraining::pca(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int numComponents = 0);
+
+		//LDA
+
+		void AITraining::lda(AITraining::TrainingValue& training, const MatrixXd& X, const VectorXi& y, int numComponents = 0);
+
+		//General functions
 		void AITraining::project(Eigen::RowVectorXd& projection, const Eigen::MatrixXd& W, const Eigen::MatrixXd& X, Eigen::RowVectorXd mu);
 		void AITraining::Train(AITraining::TrainingModel& trainingModel, const Eigen::MatrixXd& X, const Eigen::VectorXi& y);
 		int AITraining::predict(const Eigen::RowVectorXd& X, AITraining::TrainingModel& trainingModel, int distanceType = 0);
@@ -55,6 +63,10 @@ class AITraining{
 
 		double AITraining::EuclideanDistance(const Eigen::RowVectorXd& P, const Eigen::RowVectorXd& Q);
 		double AITraining::CosineDistance(const Eigen::RowVectorXd& P, const Eigen::RowVectorXd& Q);
+
+		//Utilitie functions
+
+		Eigen::RowVectorXd AITraining::meanRow(const Eigen::MatrixXd& X);
 		
 };
 
