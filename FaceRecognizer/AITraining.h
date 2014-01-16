@@ -35,14 +35,14 @@ class AITraining{
 			Eigen::MatrixXd W;
 			Eigen::VectorXi y;
 			Eigen::RowVectorXd mu;
-			std::vector<Eigen::RowVectorXd> projections;
+			std::vector<Eigen::MatrixXd> projections;
 		};
 
 		
 		
 		void Read_CSV(Eigen::MatrixXd& X, Eigen::VectorXi& y, std::string filename);
 
-		void Write_CSV(Eigen::MatrixXd& X, Eigen::VectorXi& y, std::string filename);
+		void Write_CSV(const Eigen::MatrixXd& X, const Eigen::VectorXi& y, std::string filename);
 
 		//Algorithms for AI technique
 
@@ -52,21 +52,25 @@ class AITraining{
 
 		//LDA
 
-		void AITraining::lda(AITraining::TrainingValue& training, const MatrixXd& X, const VectorXi& y, int numComponents = 0);
+		void AITraining::lda(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int numComponents = 0);
+		void AITraining::ldaOptimizedW(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int numComponents = 0);
 
 		//General functions
-		void AITraining::project(Eigen::RowVectorXd& projection, const Eigen::MatrixXd& W, const Eigen::MatrixXd& X, Eigen::RowVectorXd mu);
-		void AITraining::Train(AITraining::TrainingModel& trainingModel, const Eigen::MatrixXd& X, const Eigen::VectorXi& y);
+		void AITraining::project(Eigen::MatrixXd& projection, const Eigen::MatrixXd& W, const Eigen::MatrixXd& X, Eigen::RowVectorXd mu);
+		void AITraining::Train(AITraining::TrainingModel& trainingModel, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int AImethod = 0);
 		int AITraining::predict(const Eigen::RowVectorXd& X, AITraining::TrainingModel& trainingModel, int distanceType = 0);
 
 		//Algorithms for Calculating Distance
 
-		double AITraining::EuclideanDistance(const Eigen::RowVectorXd& P, const Eigen::RowVectorXd& Q);
-		double AITraining::CosineDistance(const Eigen::RowVectorXd& P, const Eigen::RowVectorXd& Q);
+		double AITraining::EuclideanDistance(const Eigen::MatrixXd& P, const Eigen::MatrixXd& Q);
+		double AITraining::CosineDistance(const Eigen::MatrixXd& P, const Eigen::MatrixXd& Q);
 
 		//Utilitie functions
 
 		Eigen::RowVectorXd AITraining::meanRow(const Eigen::MatrixXd& X);
+		Eigen::MatrixXd AITraining::MatrixMinusRowVector(const Eigen::MatrixXd& matrix, Eigen::RowVectorXd& rowVector);
+		std::vector<double> AITraining::uniqueFromVector(const Eigen::VectorXi& colVector);
+		void AITraining::ReplaceValue(Eigen::MatrixXd& matrix,double originalValue, double newValue);
 		
 };
 
