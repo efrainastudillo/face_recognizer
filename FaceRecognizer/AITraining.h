@@ -71,7 +71,20 @@ class AITraining{
 		Eigen::MatrixXd AITraining::MatrixMinusRowVector(const Eigen::MatrixXd& matrix, Eigen::RowVectorXd& rowVector);
 		std::vector<double> AITraining::uniqueFromVector(const Eigen::VectorXi& colVector);
 		void AITraining::ReplaceValue(Eigen::MatrixXd& matrix,double originalValue, double newValue);
+
+		//Files for AI Models
+
+		void AITraining::SaveMatrix(const Eigen::MatrixXd& X, std::string filename);
+		void AITraining::SaveVectorXi(const Eigen::VectorXi& X, std::string filename);
+		void AITraining::SaveProjections(const std::vector<Eigen::MatrixXd>& projections, std::string filename);
 		
+		void AITraining::SaveTrainingModel(const AITraining::TrainingModel& trainingModel, std::string trainingPath);
+
+		void AITraining::ReadMatrix(Eigen::MatrixXd& X, std::string filename);
+		void AITraining::ReadVectorXi(Eigen::VectorXi& X, std::string filename);
+		void AITraining::ReadProjections(std::vector<Eigen::MatrixXd>& projections, std::string filename);
+
+		void AITraining::ReadTrainingModel(AITraining::TrainingModel& trainingModel, std::string trainingPath);
 };
 
 #endif
