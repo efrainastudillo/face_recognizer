@@ -13,11 +13,17 @@ AITraining::~AITraining(){
 }
 
 void AITraining::Test(){
-	Eigen::MatrixXd X(379, 15);//28
-	Eigen::VectorXi y(379);
+	//Eigen::MatrixXd X(379, 15);//28
+	//Eigen::VectorXi y(379);
 
-	Eigen::MatrixXd Xtest(379, 15);//28
-	Eigen::VectorXi Ytest(379);
+	//Eigen::MatrixXd Xtest(379, 15);//28
+	//Eigen::VectorXi Ytest(379);
+
+	Eigen::MatrixXd X;
+	Eigen::VectorXi y;
+
+	Eigen::MatrixXd Xtest;
+	Eigen::VectorXi Ytest;
 
 	int rowToPredict;
 
@@ -28,9 +34,11 @@ void AITraining::Test(){
 	std::cout << "Technique: ";
 	std::cin >> technique;
 
-	std::cout << "Reading !";
-	Read_CSV(X, y, "D:/AIProject/Tests/gestures_file_trainning.csv");
-	Read_CSV(Xtest, Ytest, "D:/AIProject/Tests/gestures_file_test.csv");
+	std::cout << "Reading ! \n";
+	//Read_CSV(X, y, "D:/AIProject/Tests/gestures_file_trainning.csv");
+	//Read_CSV(Xtest, Ytest, "D:/AIProject/Tests/gestures_file_test.csv");
+	//Read_CSV(X, y, "D:/AIProject/Tests/images_training.csv");
+	Read_CSV(Xtest, Ytest, "D:/AIProject/Tests/images_test.csv");
 
 	std::cout << "Training ! \n";
 
@@ -38,11 +46,16 @@ void AITraining::Test(){
 
 	AITraining::TrainingModel trainingModel;
 	
-	AITraining::Train(trainingModel, X, y, technique);
-	//std::cout << trainingModel.W;
-	SaveTrainingModel(trainingModel, trainingPath);
+
+	//AITraining::Train(trainingModel, X, y, technique);
+	//std::cout << "TRAINED ! \n";
+	//SaveTrainingModel(trainingModel, trainingPath);
+
+	std::cout << "Model Saved ! \n";
 	AITraining::TrainingModel trainingModelRetrieved;
 	ReadTrainingModel(trainingModelRetrieved, trainingPath);
+
+	std::cout << "Model retrieved ! \n";
 	//SaveTrainingModel(trainingModelRetrieved, "C:/Users/LUCAS/Desktop/test/");
 	int minClass = AITraining::predict(Xtest.row(rowToPredict), trainingModelRetrieved, 0);
 
@@ -268,7 +281,7 @@ void AITraining::Read_CSV(Eigen::MatrixXd& X, Eigen::VectorXi& y, std::string fi
 	}
 
 	std::string line;
-	int i = 0, j = 0;
+	int i = 0, j = 0, rows = 0, cols = 0;
 	while (std::getline(data, line))
 	{
 		std::stringstream  lineStream(line);
@@ -276,12 +289,23 @@ void AITraining::Read_CSV(Eigen::MatrixXd& X, Eigen::VectorXi& y, std::string fi
 		j = 0;
 		while (std::getline(lineStream, cell, ','))
 		{
-			// You have a cell!!!!
-			if (j == 0){
-				y(i) = std::stoi(cell);
+			if (i == 0){
+				if (j == 0)
+					rows = std::stoi(cell);
+				else{
+					cols = std::stoi(cell);
+					X = Eigen::MatrixXd(rows, cols);
+					y = Eigen::VectorXi(rows);
+				}
 			}
 			else{
-				X(i, j - 1) = std::stod(cell);
+				// You have a cell!!!!
+				if (j == 0){
+					y(i - 1) = std::stoi(cell);
+				}
+				else{
+					X(i - 1, j - 1) = std::stod(cell);
+				}
 			}
 			++j;
 		}
@@ -427,7 +451,8 @@ void AITraining::lda(AITraining::TrainingValue& training, const Eigen::MatrixXd&
 
 		//std::cout << Sw.determinant() << " , " << (X.transpose() * X).determinant() << std::endl;
 	}
-	
+	//Determinant
+	std::cout << Sw.determinant() << std::endl;
 	SelfAdjointEigenSolver<MatrixXd> eigensolver(Sw.inverse() * Sb);
 	//if (eigensolver.info() != Success) abort();
 	training.eigenValues = eigensolver.eigenvalues();
@@ -524,7 +549,7 @@ std::vector<double> AITraining::uniqueFromVector(const Eigen::VectorXi& colVecto
 }
 
 void AITraining::pca(AITraining::TrainingValue& training, const MatrixXd& X, const VectorXi& y, int numComponents){
-
+	//Write_CSV(X, y, "D:/AIProject/Tests/X.csv");
 	int n = X.rows();
 	int d = X.cols();
 
@@ -571,6 +596,8 @@ void AITraining::pca(AITraining::TrainingValue& training, const MatrixXd& X, con
 		}
 	}
 		
+	VectorXi Y = VectorXi(training.eigenVectors.rows());
+	//Write_CSV(training.eigenVectors, Y, "D:/AIProject/Tests/eigenVectors.csv");
 	//Sorting by eigen values
 		
 	std::pair<double, int> pairEigenValue;
@@ -595,8 +622,7 @@ void AITraining::pca(AITraining::TrainingValue& training, const MatrixXd& X, con
 	training.eigenValues.conservativeResize(numComponents);
 	//std::cout << training.eigenValues;
 	//Select Components	
-	//VectorXi Y = y;
-	Write_CSV(training.eigenVectors, y, "D:/AIProject/Tests/eigenVectors.csv");
+	
 
 	
 }

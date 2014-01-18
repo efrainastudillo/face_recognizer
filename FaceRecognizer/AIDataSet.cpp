@@ -35,6 +35,10 @@ AIStatus AIDataSet::save_images(std::string filename){
         return AIStatus::AI_STATUS_NOT_IMAGES;
     }
     std::multimap<int,cv::Mat>::iterator iter = _images.begin();
+	//Writing 
+	//Write ros and column in one line
+	fout << _images.size() << "," << (_images.size() != 0 ? iter->second.rows * iter->second.cols : 0) << std::endl;
+	//Write the matrix
     while (iter != _images.end())
     {
         if( iter->second.channels() == 1)
@@ -46,7 +50,9 @@ AIStatus AIDataSet::save_images(std::string filename){
                 for(int j=0; j<iter->second.cols; j++)
                 {
                     unsigned int pixel = iter->second.at<uchar>(i,j);
-                    fout<<pixel<<",";
+					fout << pixel;
+					if (j != iter->second.cols - 1)
+						fout << ",";
                 }
             }
             fout<<std::endl;
