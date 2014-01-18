@@ -119,10 +119,9 @@ void AIDataSet::processing_image(cv::Mat &image){
         cv::Point pt1(faces[0].x, faces[0].y);
         cv::Point pt2(faces[0].x + faces[0].width, faces[0].y + faces[0].height);
         image=image(cv::Rect(pt1,pt2));
-        
-        //resize the image to 100X100 to obtain a vector of size equal 10000 to increase performance
-        cv::resize(image, image, cv::Size(100,100));
     }
+    //resize the image to 100X100 to obtain a vector of size equal 10000 to increase performance
+    cv::resize(image, image, cv::Size(100,100));
 }
 
 //Read the images from ode disk a pre-processing to save a file
