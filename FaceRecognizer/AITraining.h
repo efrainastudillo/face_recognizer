@@ -4,6 +4,7 @@
 #include "AIUtil.h"
 
 #include <iostream>
+#include <fstream>
 #include <opencv2/opencv.hpp>
 
 #include <Eigen/Core>
@@ -13,6 +14,7 @@
 #include <algorithm>    // std::sort
 #include <limits>
 #include <math.h> 
+
 
 #include <boost/filesystem/operations.hpp>
 
@@ -48,43 +50,43 @@ class AITraining{
 
 		
 		// PCA
-		void AITraining::pca(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int numComponents = 0);
+		void pca(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int numComponents = 0);
 
 		//LDA
 
-		void AITraining::lda(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int numComponents = 0);
-		void AITraining::ldaOptimizedW(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int numComponents = 0);
+		void lda(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int numComponents = 0);
+		void ldaOptimizedW(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int numComponents = 0);
 
 		//General functions
-		void AITraining::project(Eigen::MatrixXd& projection, const Eigen::MatrixXd& W, const Eigen::MatrixXd& X, Eigen::RowVectorXd mu);
-		void AITraining::Train(AITraining::TrainingModel& trainingModel, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int AImethod = 0);
-		int AITraining::predict(const Eigen::RowVectorXd& X, AITraining::TrainingModel& trainingModel, int distanceType = 0);
+		void project(Eigen::MatrixXd& projection, const Eigen::MatrixXd& W, const Eigen::MatrixXd& X, Eigen::RowVectorXd mu);
+		void Train(AITraining::TrainingModel& trainingModel, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int AImethod = 0);
+		int predict(const Eigen::RowVectorXd& X, AITraining::TrainingModel& trainingModel, int distanceType = 0);
 
 		//Algorithms for Calculating Distance
 
-		double AITraining::EuclideanDistance(const Eigen::MatrixXd& P, const Eigen::MatrixXd& Q);
-		double AITraining::CosineDistance(const Eigen::MatrixXd& P, const Eigen::MatrixXd& Q);
+		double EuclideanDistance(const Eigen::MatrixXd& P, const Eigen::MatrixXd& Q);
+		double CosineDistance(const Eigen::MatrixXd& P, const Eigen::MatrixXd& Q);
 
 		//Utilitie functions
 
-		Eigen::RowVectorXd AITraining::meanRow(const Eigen::MatrixXd& X);
-		Eigen::MatrixXd AITraining::MatrixMinusRowVector(const Eigen::MatrixXd& matrix, Eigen::RowVectorXd& rowVector);
-		std::vector<double> AITraining::uniqueFromVector(const Eigen::VectorXi& colVector);
-		void AITraining::ReplaceValue(Eigen::MatrixXd& matrix,double originalValue, double newValue);
+		Eigen::RowVectorXd meanRow(const Eigen::MatrixXd& X);
+		Eigen::MatrixXd MatrixMinusRowVector(const Eigen::MatrixXd& matrix, Eigen::RowVectorXd& rowVector);
+		std::vector<double> uniqueFromVector(const Eigen::VectorXi& colVector);
+		void ReplaceValue(Eigen::MatrixXd& matrix,double originalValue, double newValue);
 
 		//Files for AI Models
 
-		void AITraining::SaveMatrix(const Eigen::MatrixXd& X, std::string filename);
-		void AITraining::SaveVectorXi(const Eigen::VectorXi& X, std::string filename);
-		void AITraining::SaveProjections(const std::vector<Eigen::MatrixXd>& projections, std::string filename);
+		void SaveMatrix(const Eigen::MatrixXd& X, std::string filename);
+		void SaveVectorXi(const Eigen::VectorXi& X, std::string filename);
+		void SaveProjections(const std::vector<Eigen::MatrixXd>& projections, std::string filename);
 		
-		void AITraining::SaveTrainingModel(const AITraining::TrainingModel& trainingModel, std::string trainingPath);
+		void SaveTrainingModel(const AITraining::TrainingModel& trainingModel, std::string trainingPath);
 
-		void AITraining::ReadMatrix(Eigen::MatrixXd& X, std::string filename);
-		void AITraining::ReadVectorXi(Eigen::VectorXi& X, std::string filename);
-		void AITraining::ReadProjections(std::vector<Eigen::MatrixXd>& projections, std::string filename);
+		void ReadMatrix(Eigen::MatrixXd& X, std::string filename);
+		void ReadVectorXi(Eigen::VectorXi& X, std::string filename);
+		void ReadProjections(std::vector<Eigen::MatrixXd>& projections, std::string filename);
 
-		void AITraining::ReadTrainingModel(AITraining::TrainingModel& trainingModel, std::string trainingPath);
+		void ReadTrainingModel(AITraining::TrainingModel& trainingModel, std::string trainingPath);
 };
 
 #endif
