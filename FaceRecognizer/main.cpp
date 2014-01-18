@@ -58,14 +58,14 @@ int main(int argc, const char * argv[])
      */
     // insert code here...
 
-	AIDataSet d;
+	/*AIDataSet d;
 
 	if (d.read_images() != AIStatus::AI_STATUS_OK){
 		LOG("Error reading images")
 	}
 
 	d.save_images("D:/AIProject/Tests/images_training.csv");
-
+     */
 	//AITraining training;
 
 	//training.Test();
