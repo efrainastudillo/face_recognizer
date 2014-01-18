@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Efrain Astudillo. All rights reserved.
 //
 
-#include "AIFaceDetection.h"
 #include "AIDataSet.h"
 #include "AITraining.h"
 #include <Eigen/Dense>
@@ -18,11 +17,11 @@ namespace fs = boost::filesystem;
 
 int main(int argc, const char * argv[])
 {
-	/*
+	
     AIDataSet d;
-    d.load_data("/Users/efrainastudillo/Documents/file.csv");
+    //d.load_data("/Users/efrainastudillo/Documents/file.csv");
     
-    if(d.read_images()!= AIStatus::AI_STATUS_OK){
+    if(d.read_images(__IMAGES_PATH__)!= AIStatus::AI_STATUS_OK){
         LOG("Error reading images")
     }
     
@@ -33,7 +32,7 @@ int main(int argc, const char * argv[])
 
     cv::imshow("Imagen", img);
     cv::waitKey();
-    */
+    
     /*
     cv::VideoCapture *capture = new cv::VideoCapture(0);
     
@@ -60,9 +59,9 @@ int main(int argc, const char * argv[])
     // insert code here...
 
 
-	AITraining training; 
+	//AITraining training;
 
-	training.Test();
+	//training.Test();
 
 	//Eigen::RowVectorXd rv(3);
 	//rv << 1, 2, 3;
@@ -70,7 +69,7 @@ int main(int argc, const char * argv[])
 	//std::cout << rv.array().pow(2).sum();
 
     std::cout << "cleaned all windows!\n";
-	std::cin.get();
+	//std::cin.get();
     return 0;
 }
 

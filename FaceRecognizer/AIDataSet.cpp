@@ -13,32 +13,9 @@ AIDataSet::AIDataSet(){
     
     LOG("My Image Path is: "<<__IMAGES_PATH__)
     LOG("My Classifier Path is: "<<__HAARCASCADE_PATH__)
-    _path = fs::path(__IMAGES_PATH__);
-    _classifier = cv::CascadeClassifier();
-    
-    if(!_classifier.load(__HAARCASCADE_PATH__))
-    {
-        LOG("haarcascade classifier file not found")
-    }
     
     _names  = std::map<int, std::string>();
-    _images = std::map<int,cv::Mat>();
-    
-    LOG("configuring classifer and images path")
-}
-
-AIDataSet::AIDataSet(std::string image_path,std::string classifier_path){
-    _path = fs::path(image_path);
-    _classifier = cv::CascadeClassifier();
-    if(!_classifier.load(classifier_path))
-    {
-        LOG("haarcascade classifier file not found")
-    }
-    
-    _names  = std::map<int, std::string>();
-    _images = std::map<int,cv::Mat>();
-    
-    LOG("configuring classifer and images path")
+    _images = std::multimap<int,cv::Mat>();
 }
 
 AIDataSet::~AIDataSet(){
@@ -57,7 +34,7 @@ AIStatus AIDataSet::save_images(std::string filename){
         LOG("not found images to save, < _images std::map > is empty")
         return AIStatus::AI_STATUS_NOT_IMAGES;
     }
-    std::map<int,cv::Mat>::iterator iter = _images.begin();
+    std::multimap<int,cv::Mat>::iterator iter = _images.begin();
     while (iter != _images.end())
     {
         if( iter->second.channels() == 1)
@@ -72,11 +49,11 @@ AIStatus AIDataSet::save_images(std::string filename){
                     fout<<pixel<<",";
                 }
             }
+            fout<<std::endl;
         }
         iter++;
     }
     
-    fout<<std::endl;
     fout.close();
     
     //remove all data to free memory
@@ -144,7 +121,15 @@ void AIDataSet::processing_image(cv::Mat &image){
 
 //Read the images from ode disk a pre-processing to save a file
 //Each directory contains a set of images of each person
-AIStatus AIDataSet::read_images(){
+AIStatus AIDataSet::read_images(std::string){
+    
+    _path = fs::path(__IMAGES_PATH__);
+    _classifier = cv::CascadeClassifier();
+    
+    if(!_classifier.load(__HAARCASCADE_PATH__))
+    {
+        LOG("haarcascade classifier file not found")
+    }
     
     fs::directory_iterator _end;
     
@@ -156,7 +141,7 @@ AIStatus AIDataSet::read_images(){
     std::cout<<"Directory exist..."<<std::endl;
     
     //class identifier, link between index and name
-    int class_identifier = 0;
+    int class_code = 0;
     
     //this loop get the folder name of each person
     for (fs::directory_iterator _parent_dir(_path); _parent_dir != _end; _parent_dir++)
@@ -167,19 +152,19 @@ AIStatus AIDataSet::read_images(){
             for (fs::directory_iterator _children_dir(fs::path(_path / _parent_dir->path().stem()));
                 _children_dir != _end; _children_dir ++)
             {
-            
+                                
                 //show whether is a file and not a directory
                 if (fs::is_regular_file(_children_dir->status()))
                 {
                     //std::cout<<"dir: "<<_children_dir->path().filename()<<std::endl;
                     cv::Mat imagen = cv::imread(_children_dir->path().string());
                     processing_image(imagen);
-                    _images.insert(std::make_pair(class_identifier, imagen));
+                    _images.insert(std::make_pair(class_code, imagen));
                     
                 }
             }
-            _names.insert(std::make_pair(class_identifier, _parent_dir->path().filename().string()));
-            class_identifier += 1;
+            _names.insert(std::make_pair(class_code, _parent_dir->path().filename().string()));
+            class_code += 1;
         }
     }
 

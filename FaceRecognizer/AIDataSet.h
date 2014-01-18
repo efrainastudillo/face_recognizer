@@ -26,14 +26,11 @@ public:
     
     Eigen::VectorXf ope;
 
-    
-    
-    
     AIDataSet();
     AIDataSet(std::string,std::string);
     ~AIDataSet();
     
-    AIStatus read_images();
+    AIStatus read_images(std::string);
     
     /*  Processing the image <bold>image</bold>, convert to gray-scale, find a face into it and extract the ROI
         then resize the image to normalize the same size all images
@@ -54,12 +51,11 @@ public:
 private:
     fs::path                    _path;
     cv::CascadeClassifier       _classifier;
+    
 public:
-    std::map<int,cv::Mat>         _images;
+    std::multimap<int,cv::Mat>  _images;
     
-    //
     std::map<int, std::string>  _names;
-    
     
 };
 
