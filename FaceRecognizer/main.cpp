@@ -26,8 +26,8 @@ int main(int argc, const char * argv[])
     }
     
     d.save_images("/Users/efrainastudillo/Documents/Development/file.csv");
-    LOG(d._names.size())
-    LOG(d._names.at(2))
+    //LOG(d._names.size())
+    //LOG(d._names.at(2))
     cv::Mat img = cv::imread("/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/images/Adrien_Brody/Adrien_Brody_0004.jpg");
 
     cv::imshow("Imagen", img);
