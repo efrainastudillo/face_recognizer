@@ -125,7 +125,7 @@ void AIDataSet::processing_image(cv::Mat &image){
         image=image(cv::Rect(pt1,pt2));
     }
     //resize the image to 100X100 to obtain a vector of size equal 10000 to increase performance
-    cv::resize(image, image, cv::Size(100,100));
+    cv::resize(image, image, cv::Size(80,80));
 }
 
 //Read the images from ode disk a pre-processing to save a file
@@ -167,6 +167,10 @@ AIStatus AIDataSet::read_images(std::string path){
                 {
                     //std::cout<<"dir: "<<_children_dir->path().filename()<<std::endl;
                     cv::Mat imagen = cv::imread(_children_dir->path().string(),CV_LOAD_IMAGE_GRAYSCALE);
+                    if (imagen.data == NULL) {
+                        LOG("Image not Found")
+                        continue;
+                    }
                     processing_image(imagen);
                     _images.insert(std::make_pair(class_code, imagen));
                 }
