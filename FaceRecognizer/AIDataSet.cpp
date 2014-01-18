@@ -51,7 +51,7 @@ AIStatus AIDataSet::save_images(std::string filename){
                 {
                     unsigned int pixel = iter->second.at<uchar>(i,j);
 					fout << pixel;
-					if (j != iter->second.cols - 1)
+					//if (j != iter->second.cols - 1)
 						fout << ",";
                 }
             }
