@@ -40,7 +40,7 @@ public:
     /**
         Save images to a file. Each image is contained in a row of the file
      */
-    AIStatus save_images(std::string);
+	AIStatus save_images(std::string);
     
     /*
         Load csv file with the images previously saved
