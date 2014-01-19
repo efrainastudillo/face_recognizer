@@ -36,7 +36,7 @@ void AITraining::Test(std::string pathTraining){
 		std::cin >> technique;
 
 		Eigen::MatrixXd X;
-		Eigen::VectorXi y;
+		AITraining::Eigen_VectorXx y;
 
 		std::cout << "Reading ! \n";
 		Read_CSV(X, y, pathTraining);
@@ -60,7 +60,7 @@ void AITraining::Test(std::string pathTraining){
 		std::cin >> rowToPredict;
 
 		Eigen::MatrixXd Xtest;
-		Eigen::VectorXi Ytest;
+		AITraining::Eigen_VectorXx Ytest;
 
 		Read_CSV(Xtest, Ytest, pathTest);
 
@@ -68,7 +68,7 @@ void AITraining::Test(std::string pathTraining){
 		ReadTrainingModel(trainingModelRetrieved, pathModel);
 		std::cout << "Training Model retrieved ! \n";
 
-		int minClass = AITraining::predict(Xtest.row(rowToPredict), trainingModelRetrieved, 0);//the last parameter is the method to calculate the distance, 0 for Euclidian, 1 for Cosine
+		AITraining::DataLabel minClass = AITraining::predict(Xtest.row(rowToPredict), trainingModelRetrieved, 0);//the last parameter is the method to calculate the distance, 0 for Euclidian, 1 for Cosine
 		std::cout << "Prediction : " << minClass << std::endl;
 	}
 
@@ -86,7 +86,7 @@ void AITraining::ReadTrainingModel(AITraining::TrainingModel& trainingModel, std
 	std::string fileProjections(filePath + "projections.csv");
 
 	ReadMatrix(trainingModel.W, fileW);
-	ReadVectorXi(trainingModel.y, fileY);
+	ReadVectorXx(trainingModel.y, fileY);
 	MatrixXd muHelper;
 	ReadMatrix(muHelper, fileMu);
 	trainingModel.mu = muHelper.row(0);
@@ -130,7 +130,7 @@ void AITraining::ReadMatrix(Eigen::MatrixXd& X, std::string filename){
 	data.close();
 }
 
-void AITraining::ReadVectorXi(Eigen::VectorXi& X, std::string filename){
+void AITraining::ReadVectorXx(AITraining::Eigen_VectorXx& X, std::string filename){
 	std::ifstream data(filename);
 	if (!data.is_open()) {
 		LOG("file cant open to read data ")
@@ -148,10 +148,10 @@ void AITraining::ReadVectorXi(Eigen::VectorXi& X, std::string filename){
 		{
 			if (i == 0){
 				size = std::stoi(cell);
-				X = Eigen::VectorXi(size);
+				X = AITraining::Eigen_VectorXx(size);
 			}
 			else{
-				X(i - 1) = std::stoi(cell);
+				X(i - 1) = cell;
 			}
 			++j;
 		}
@@ -221,7 +221,7 @@ void AITraining::SaveTrainingModel(const AITraining::TrainingModel& trainingMode
 	std::string fileProjections(filePath + "projections.csv");
 
 	SaveMatrix(trainingModel.W, fileW);
-	SaveVectorXi(trainingModel.y, fileY);
+	SaveVectorXx(trainingModel.y, fileY);
 	SaveMatrix(trainingModel.mu, fileMu);
 	SaveProjections(trainingModel.projections, fileProjections);
 
@@ -245,7 +245,7 @@ void AITraining::SaveMatrix(const Eigen::MatrixXd& X, std::string filename){
 	fout.close();
 }
 
-void AITraining::SaveVectorXi(const Eigen::VectorXi& X, std::string filename){
+void AITraining::SaveVectorXx(const AITraining::Eigen_VectorXx& X, std::string filename){
 	std::ofstream fout(filename);
 	if (!fout)
 	{
@@ -282,7 +282,7 @@ void AITraining::SaveProjections(const std::vector<Eigen::MatrixXd>& projections
 	fout.close();
 }
 
-void AITraining::Read_CSV(Eigen::MatrixXd& X, Eigen::VectorXi& y, std::string filename){
+void AITraining::Read_CSV(Eigen::MatrixXd& X, AITraining::Eigen_VectorXx& y, std::string filename){
 
 	std::ifstream data(filename);
 	if (!data.is_open()) {
@@ -305,13 +305,13 @@ void AITraining::Read_CSV(Eigen::MatrixXd& X, Eigen::VectorXi& y, std::string fi
 				else{
 					cols = std::stoi(cell);
 					X = Eigen::MatrixXd(rows, cols);
-					y = Eigen::VectorXi(rows);
+					y = AITraining::Eigen_VectorXx(rows);
 				}
 			}
 			else{
 				// You have a cell!!!!
 				if (j == 0){
-					y(i - 1) = std::stoi(cell);
+					y(i - 1) = cell;
 				}
 				else{
 					X(i - 1, j - 1) = std::stod(cell);
@@ -324,7 +324,7 @@ void AITraining::Read_CSV(Eigen::MatrixXd& X, Eigen::VectorXi& y, std::string fi
 	data.close();
 }
 
-void AITraining::Write_CSV(const Eigen::MatrixXd& X, const Eigen::VectorXi& y, std::string filename){
+void AITraining::Write_CSV(const Eigen::MatrixXd& X, const AITraining::Eigen_VectorXx& y, std::string filename){
 	std::ofstream fout(filename);
 	if (!fout)
 	{
@@ -351,9 +351,9 @@ double AITraining::CosineDistance(const Eigen::MatrixXd& P, const Eigen::MatrixX
 	return  - (P * Q.transpose()).sum() / sqrt(((P.transpose() * P) *  (Q.transpose() * Q)).sum());	
 }
 
-int AITraining::predict(const Eigen::RowVectorXd& X, AITraining::TrainingModel& trainingModel, int distanceType){
+AITraining::DataLabel AITraining::predict(const Eigen::RowVectorXd& X, AITraining::TrainingModel& trainingModel, int distanceType){
 	double minDist = std::numeric_limits<double>::max();
-	int minClass = -1;
+	AITraining::DataLabel minClass = "None";
 
 	MatrixXd Q;
 	project(Q, trainingModel.W, X, trainingModel.mu);
@@ -381,7 +381,7 @@ int AITraining::predict(const Eigen::RowVectorXd& X, AITraining::TrainingModel& 
 	return minClass;
 }
 
-void AITraining::Train(AITraining::TrainingModel& trainingModel, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int AImethod){
+void AITraining::Train(AITraining::TrainingModel& trainingModel, const Eigen::MatrixXd& X, const AITraining::Eigen_VectorXx& y, int AImethod){
 	
 	AITraining::TrainingValue training;
 
@@ -415,14 +415,14 @@ void AITraining::Train(AITraining::TrainingModel& trainingModel, const Eigen::Ma
 	
 }
 
-void AITraining::lda(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int numComponents){
+void AITraining::lda(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const AITraining::Eigen_VectorXx& y, int numComponents){
 	
 	int n = X.rows();
 	int d = X.cols();
 	
 	//Get Number of unique values
 
-	std::vector<double> C = uniqueFromVector(y);
+	std::vector<AITraining::DataLabel> C = uniqueFromVector(y);
 	
 	if ((numComponents <= 0) || (numComponents >(C.size() - 1)))
 		numComponents = C.size() - 1;
@@ -493,13 +493,13 @@ void AITraining::lda(AITraining::TrainingValue& training, const Eigen::MatrixXd&
 	training.eigenValues.conservativeResize(numComponents);
 	//std::cout << training.eigenValues;
 	//Select Components	
-	//VectorXi Y = y;
+	//VectorXx Y = y;
 	//Write_CSV(training.eigenVectors, Y, "D:/AIProject/Tests/eigenVectors.csv");
 
 
 }
 
-void AITraining::ldaOptimizedW(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const Eigen::VectorXi& y, int numComponents){
+void AITraining::ldaOptimizedW(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const AITraining::Eigen_VectorXx& y, int numComponents){
 	int n = X.rows();
 	int d = X.cols();
 
@@ -546,8 +546,8 @@ Eigen::RowVectorXd AITraining::meanRow(const Eigen::MatrixXd& X){
 	return totalMean;
 }
 
-std::vector<double> AITraining::uniqueFromVector(const Eigen::VectorXi& colVector){
-	std::vector<double> C;
+std::vector<AITraining::DataLabel> AITraining::uniqueFromVector(const AITraining::Eigen_VectorXx& colVector){
+	std::vector<AITraining::DataLabel> C;
 
 	for (int i = 0; i < colVector.size(); ++i){
 		if (std::find(C.begin(), C.end(), colVector(i)) == C.end()){//no contains
@@ -558,7 +558,7 @@ std::vector<double> AITraining::uniqueFromVector(const Eigen::VectorXi& colVecto
 	return C;
 }
 
-void AITraining::pca(AITraining::TrainingValue& training, const MatrixXd& X, const VectorXi& y, int numComponents){
+void AITraining::pca(AITraining::TrainingValue& training, const MatrixXd& X, const AITraining::Eigen_VectorXx& y, int numComponents){
 	//Write_CSV(X, y, "D:/AIProject/Tests/X.csv");
 	int n = X.rows();
 	int d = X.cols();
@@ -606,8 +606,6 @@ void AITraining::pca(AITraining::TrainingValue& training, const MatrixXd& X, con
 		}
 	}
 		
-	VectorXi Y = VectorXi(training.eigenVectors.rows());
-	//Write_CSV(training.eigenVectors, Y, "D:/AIProject/Tests/eigenVectors.csv");
 	//Sorting by eigen values
 		
 	std::pair<double, int> pairEigenValue;

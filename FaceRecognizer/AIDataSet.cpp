@@ -43,7 +43,7 @@ AIStatus AIDataSet::save_images(std::string filename){
     {
         if( iter->second.channels() == 1)
         {
-            fout<<iter->first<<",";
+            fout<<_names.at( iter->first)<<",";
             
             for(int i=0; i<iter->second.rows; i++)
             {
