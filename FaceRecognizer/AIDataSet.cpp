@@ -102,10 +102,14 @@ AIStatus AIDataSet::load_data(std::string filename){
 }
 
 void AIDataSet::processing_image(cv::Mat &image){
-    //cv::Mat image = tmp.clone();
     //convert captured image to gray scale and equalize
-    cv::cvtColor(image, image, CV_BGR2GRAY);
+    if (image.data == NULL) {
+        LOG("Image not Found")
+        return;
+    }
+    //cv::cvtColor(image, image, CV_BGR2GRAY);
     cv::equalizeHist(image, image);
+    
     
     //create a vector array to store the face found
     std::vector<cv::Rect> faces;
@@ -121,14 +125,14 @@ void AIDataSet::processing_image(cv::Mat &image){
         image=image(cv::Rect(pt1,pt2));
     }
     //resize the image to 100X100 to obtain a vector of size equal 10000 to increase performance
-    cv::resize(image, image, cv::Size(100,100));
+    cv::resize(image, image, cv::Size(80,80));
 }
 
 //Read the images from ode disk a pre-processing to save a file
 //Each directory contains a set of images of each person
-AIStatus AIDataSet::read_images(std::string){
+AIStatus AIDataSet::read_images(std::string path){
     
-    _path = fs::path(__IMAGES_PATH__);
+    _path = fs::path(path);
     _classifier = cv::CascadeClassifier();
     
     if(!_classifier.load(__HAARCASCADE_PATH__))
@@ -157,15 +161,18 @@ AIStatus AIDataSet::read_images(std::string){
             for (fs::directory_iterator _children_dir(fs::path(_path / _parent_dir->path().stem()));
                 _children_dir != _end; _children_dir ++)
             {
-                                
+                LOG(_children_dir->path().string())
                 //show whether is a file and not a directory
                 if (fs::is_regular_file(_children_dir->status()))
                 {
                     //std::cout<<"dir: "<<_children_dir->path().filename()<<std::endl;
-                    cv::Mat imagen = cv::imread(_children_dir->path().string());
+                    cv::Mat imagen = cv::imread(_children_dir->path().string(),CV_LOAD_IMAGE_GRAYSCALE);
+                    if (imagen.data == NULL) {
+                        LOG("Image not Found")
+                        continue;
+                    }
                     processing_image(imagen);
                     _images.insert(std::make_pair(class_code, imagen));
-                    
                 }
             }
             _names.insert(std::make_pair(class_code, _parent_dir->path().filename().string()));
