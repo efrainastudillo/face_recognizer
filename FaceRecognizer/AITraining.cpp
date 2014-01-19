@@ -372,7 +372,7 @@ int AITraining::predict(const Eigen::RowVectorXd& X, AITraining::TrainingModel& 
 			dist = 0;
 			break;
 		}
-			
+
 		if (dist < minDist){
 			minDist = dist;
 			minClass = trainingModel.y(i);
