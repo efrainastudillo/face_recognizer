@@ -21,7 +21,7 @@ int main(int argc, const char * argv[])
     AIDataSet d;
     //d.load_data("/Users/efrainastudillo/Documents/file.csv");
     
-    
+	/*
     //se graba el data training
     if(d.read_images(__IMAGES_PATH__)!= AIStatus::AI_STATUS_OK){
         LOG("Error reading images")
@@ -37,7 +37,7 @@ int main(int argc, const char * argv[])
     d.save_images(__TEST_PATH__);
     
     d._images.clear();
-    cv::waitKey();
+    cv::waitKey();*/
     
     /*
     cv::VideoCapture *capture = new cv::VideoCapture(0);
@@ -75,12 +75,12 @@ int main(int argc, const char * argv[])
 	d.save_images(pathTraining);*/
 
 	
-	//AITraining training;
+	AITraining training;
 
-	//training.Test(pathTraining);
+	training.Test(pathTraining);
 
     std::cout << "cleaned all windows!\n";
-	//std::cin.get();
+	std::cin.get();
     return 0;
 }
 
