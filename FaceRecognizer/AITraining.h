@@ -25,7 +25,7 @@ class AITraining{
 		AITraining();
 		~AITraining();
 
-		void Test();
+		void Test(std::string pathTraining);
 
 		struct TrainingValue {
 			Eigen::VectorXd eigenValues;

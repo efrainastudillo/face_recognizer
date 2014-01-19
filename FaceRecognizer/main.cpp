@@ -58,17 +58,21 @@ int main(int argc, const char * argv[])
      */
     // insert code here...
 
+
+	std::string pathTraining = "D:/AIProject/Tests/images_training.csv";
 	/*AIDataSet d;
 
 	if (d.read_images(__IMAGES_PATH__) != AIStatus::AI_STATUS_OK){
 		LOG("Error reading images")
 	}
 
-	d.save_images("D:/AIProject/Tests/images_training.csv");*/
+	d.save_images(pathTraining);*/
+
+
 
 	AITraining training;
 
-	training.Test();
+	training.Test(pathTraining);
 
 	//Eigen::RowVectorXd rv(3);
 	//rv << 1, 2, 3;

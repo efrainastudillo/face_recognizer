@@ -12,57 +12,67 @@ AITraining::~AITraining(){
 
 }
 
-void AITraining::Test(){
-	//Eigen::MatrixXd X(379, 15);//28
-	//Eigen::VectorXi y(379);
+void AITraining::Test(std::string pathTraining){
+	//PAths
+	std::string pathTest = "D:/AIProject/Tests/images_test.csv";
+	std::string pathModel = "D:/AIProject/face_recognizer/FaceRecognizer/trainingModel/";
+	//End paths
 
-	//Eigen::MatrixXd Xtest(379, 15);//28
-	//Eigen::VectorXi Ytest(379);
+	//Selection of the Process (training and prediction)
 
-	Eigen::MatrixXd X;
-	Eigen::VectorXi y;
+	int process;
+	std::cout << "Enter what you want to do (0 : Training and prediction , 1 : Only prediction): ";
+	std::cin >> process;
 
-	Eigen::MatrixXd Xtest;
-	Eigen::VectorXi Ytest;
 
-	int rowToPredict;
-
-	std::cout << "Row to predict: ";
-	std::cin >> rowToPredict;
+	//End Selection of the process
 	
-	int technique;
-	std::cout << "Technique: ";
-	std::cin >> technique;
-
-	std::cout << "Reading ! \n";
-	//Read_CSV(X, y, "D:/AIProject/Tests/gestures_file_trainning.csv");
-	//Read_CSV(Xtest, Ytest, "D:/AIProject/Tests/gestures_file_test.csv");
-	//Read_CSV(X, y, "D:/AIProject/Tests/images_training.csv");
-	Read_CSV(Xtest, Ytest, "D:/AIProject/Tests/images_test.csv");
-
-	std::cout << "Training ! \n";
-
-	std::string trainingPath = "D:/AIProject/face_recognizer/FaceRecognizer/trainingModel/";
-
-	AITraining::TrainingModel trainingModel;
+	// TRAINING process
 	
+	if (process == 0){
 
-	//AITraining::Train(trainingModel, X, y, technique);
-	//std::cout << "TRAINED ! \n";
-	//SaveTrainingModel(trainingModel, trainingPath);
+		int technique;
+		std::cout << "Technique (0 : PCA , 1 : LDA): ";// cro ( 0 ) is for PCA and one ( 1 ) is for LDA
+		std::cin >> technique;
 
-	std::cout << "Model Saved ! \n";
-	AITraining::TrainingModel trainingModelRetrieved;
-	ReadTrainingModel(trainingModelRetrieved, trainingPath);
+		Eigen::MatrixXd X;
+		Eigen::VectorXi y;
 
-	std::cout << "Model retrieved ! \n";
-	//SaveTrainingModel(trainingModelRetrieved, "C:/Users/LUCAS/Desktop/test/");
-	int minClass = AITraining::predict(Xtest.row(rowToPredict), trainingModelRetrieved, 0);
+		std::cout << "Reading ! \n";
+		Read_CSV(X, y, pathTraining);
 
-	std::cout << "Prediction : " << minClass << std::endl;
-	//std::cin.get();
-	/*std::cout << "Writing ! \n";
-	Write_CSV(trainingModel.W, trainingModel.y, "D:/AIProject/Tests/matrixW.csv");*/
+		std::cout << "Training ! \n";
+		AITraining::TrainingModel trainingModel;
+		AITraining::Train(trainingModel, X, y, technique);
+		std::cout << "TRAINED ! \n";
+		std::cout << "Saving model... ! \n";
+		SaveTrainingModel(trainingModel, pathModel);
+		std::cout << "MODEL SAVED ! \n";
+	}
+
+	//End Training process
+	
+	//PREDICTION process
+	if (process == 0 || process == 1){
+		int rowToPredict;
+
+		std::cout << "Row to predict: ";// from the test file you have to choose the row to test in the prediction
+		std::cin >> rowToPredict;
+
+		Eigen::MatrixXd Xtest;
+		Eigen::VectorXi Ytest;
+
+		Read_CSV(Xtest, Ytest, pathTest);
+
+		AITraining::TrainingModel trainingModelRetrieved;
+		ReadTrainingModel(trainingModelRetrieved, pathModel);
+		std::cout << "Training Model retrieved ! \n";
+
+		int minClass = AITraining::predict(Xtest.row(rowToPredict), trainingModelRetrieved, 0);//the last parameter is the method to calculate the distance, 0 for Euclidian, 1 for Cosine
+		std::cout << "Prediction : " << minClass << std::endl;
+	}
+
+	//End prediction Process
 	std::cin.get();
 }
 
