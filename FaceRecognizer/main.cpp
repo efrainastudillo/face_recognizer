@@ -18,20 +18,26 @@ namespace fs = boost::filesystem;
 int main(int argc, const char * argv[])
 {
 	
-    /*AIDataSet d;
+    AIDataSet d;
     //d.load_data("/Users/efrainastudillo/Documents/file.csv");
     
+    
+    //se graba el data training
     if(d.read_images(__IMAGES_PATH__)!= AIStatus::AI_STATUS_OK){
         LOG("Error reading images")
     }
+    d.save_images(__TRAINING_PATH__);
     
-    d.save_images("/Users/efrainastudillo/Documents/Development/file.csv");
-    //LOG(d._names.size())
-    //LOG(d._names.at(2))
-    cv::Mat img = cv::imread("/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/images/Adrien_Brody/Adrien_Brody_0004.jpg");
-
-    cv::imshow("Imagen", img);
-    cv::waitKey();*/
+    d._images.clear();
+    
+    //se graba el data test
+    if(d.read_images(__IMAGES_PATH_TEST__)!= AIStatus::AI_STATUS_OK){
+        LOG("Error reading images")
+    }
+    d.save_images(__TEST_PATH__);
+    
+    d._images.clear();
+    cv::waitKey();
     
     /*
     cv::VideoCapture *capture = new cv::VideoCapture(0);
@@ -69,12 +75,12 @@ int main(int argc, const char * argv[])
 	d.save_images(pathTraining);*/
 
 	
-	AITraining training;
+	//AITraining training;
 
-	training.Test(pathTraining);
+	//training.Test(pathTraining);
 
     std::cout << "cleaned all windows!\n";
-	std::cin.get();
+	//std::cin.get();
     return 0;
 }
 

@@ -372,7 +372,7 @@ AITraining::DataLabel AITraining::predict(const Eigen::RowVectorXd& X, AITrainin
 			dist = 0;
 			break;
 		}
-			
+
 		if (dist < minDist){
 			minDist = dist;
 			minClass = trainingModel.y(i);
