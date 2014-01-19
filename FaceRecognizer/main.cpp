@@ -59,7 +59,7 @@ int main(int argc, const char * argv[])
     // insert code here...
 
 
-	std::string pathTraining = "/Users/efrainastudillo/Documents/Development/testFace/file.csv";
+	std::string pathTraining = __TRAINING_PATH__;
 	/*AIDataSet d;
 
 	if (d.read_images(__IMAGES_PATH__) != AIStatus::AI_STATUS_OK){
@@ -68,20 +68,13 @@ int main(int argc, const char * argv[])
 
 	d.save_images(pathTraining);*/
 
-
-
+	
 	AITraining training;
 
 	training.Test(pathTraining);
 
-	//Eigen::RowVectorXd rv(3);
-	//rv << 1, 2, 3;
-
-	//std::cout << rv.array().pow(2).sum();
-
-
     std::cout << "cleaned all windows!\n";
-	//std::cin.get();
+	std::cin.get();
     return 0;
 }
 

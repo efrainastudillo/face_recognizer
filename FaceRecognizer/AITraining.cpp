@@ -14,8 +14,8 @@ AITraining::~AITraining(){
 
 void AITraining::Test(std::string pathTraining){
 	//PAths
-	std::string pathTest = "/Users/efrainastudillo/Documents/Development/testFace/test.csv";
-	std::string pathModel = "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/trainingModel/";
+	std::string pathTest = __TEST_PATH__;
+	std::string pathModel = __MODEL_PATH__;
 	//End paths
 
 	//Selection of the Process (training and prediction)

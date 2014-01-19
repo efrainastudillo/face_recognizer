@@ -23,18 +23,30 @@ enum AIStatus{AI_STATUS_OK,
 #ifdef __APPLE__
 #define __IMAGES_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/images/"
 #define __HAARCASCADE_PATH__ "/Users/efrainastudillo/Documents/Development/opencv/data/haarcascades/haarcascade_frontalface_alt.xml"
+#define __TRAINING_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/testingFiles/images_training.csv"
+#define __TEST_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/testingFiles/images_test.csv"
+#define __MODEL_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/trainingModel/"
 
 #elif __PETER__ //Pedro Lucas Path
 #define __IMAGES_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/images/"
 #define __HAARCASCADE_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/data/haarcascade_frontalface_alt.xml"
+#define __TRAINING_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/testingFiles/images_training.csv"
+#define __TEST_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/testingFiles/images_test.csv"
+#define __MODEL_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/trainingModel/"
 
 #elif __GERMAN__ // German Villalba Path
 #define __IMAGES_PATH__ "/path/german/villalba"
 #define __HAARCASCADE_PATH__ ""
+#define __TRAINING_PATH__ ""
+#define __TEST_PATH__ ""
+#define __MODEL_PATH__ ""
 
 #else //path default
 #define __IMAGES_PATH__ "/home/user/documents/"
 #define __HAARCASCADE_PATH__ ""
+#define __TRAINING_PATH__ ""
+#define __TEST_PATH__ ""
+#define __MODEL_PATH__ ""
 
 #endif
 
