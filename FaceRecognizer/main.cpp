@@ -18,7 +18,7 @@ namespace fs = boost::filesystem;
 int main(int argc, const char * argv[])
 {
 	
-    AIDataSet d;
+    /*AIDataSet d;
     //d.load_data("/Users/efrainastudillo/Documents/file.csv");
     
     if(d.read_images(__IMAGES_PATH__)!= AIStatus::AI_STATUS_OK){
@@ -31,7 +31,7 @@ int main(int argc, const char * argv[])
     cv::Mat img = cv::imread("/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/images/Adrien_Brody/Adrien_Brody_0004.jpg");
 
     cv::imshow("Imagen", img);
-    cv::waitKey();
+    cv::waitKey();*/
     
     /*
     cv::VideoCapture *capture = new cv::VideoCapture(0);
@@ -59,7 +59,7 @@ int main(int argc, const char * argv[])
     // insert code here...
 
 
-	std::string pathTraining = "D:/AIProject/Tests/images_training.csv";
+	std::string pathTraining = "/Users/efrainastudillo/Documents/Development/testFace/file.csv";
 	/*AIDataSet d;
 
 	if (d.read_images(__IMAGES_PATH__) != AIStatus::AI_STATUS_OK){
