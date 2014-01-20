@@ -17,12 +17,13 @@ namespace fs = boost::filesystem;
 
 int main(int argc, const char * argv[])
 {
-	
+	/*
     AIDataSet d;
     //d.load_data("/Users/efrainastudillo/Documents/file.csv");
     
+	
     //se graba el data training
-   /* if(d.read_images(__IMAGES_PATH__)!= AIStatus::AI_STATUS_OK){
+    if(d.read_images(__IMAGES_PATH__)!= AIStatus::AI_STATUS_OK){
         LOG("Error reading images")
     }
     d.save_images(__TRAINING_PATH__);
