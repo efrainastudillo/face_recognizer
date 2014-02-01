@@ -6,6 +6,8 @@
 *.pbxproj
 FaceRecognizer.xcodeproj/
 *.exe
+FaceRecognizer/trainingModel/
+FaceRecognizer/testingFiles/
 
 # Compiled Dynamic libraries
 *.so

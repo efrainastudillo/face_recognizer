@@ -17,7 +17,10 @@ namespace fs = boost::filesystem;
 
 int main(int argc, const char * argv[])
 {
-	/*
+    /*
+     
+	consciente
+     
     AIDataSet d;
     //d.load_data("/Users/efrainastudillo/Documents/file.csv");
     
@@ -75,9 +78,11 @@ int main(int argc, const char * argv[])
 	d.save_images(pathTraining);
      */
 	
-	AITraining training;
+	//AITraining training;
 
-	training.Test(pathTraining);
+	//training.Test(pathTraining);
+    
+    //std::cout<< M.inverse() <<std::endl;
 
     std::cout << "cleaned all windows!\n";
 	//std::cin.get();
