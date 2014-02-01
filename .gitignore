@@ -8,6 +8,9 @@ FaceRecognizer.xcodeproj/
 *.exe
 FaceRecognizer/trainingModel/
 FaceRecognizer/testingFiles/
+BaseApp/BaseApp/
+BaseApp/thirdparty/
+BaseApp/BaseApp.xcodeproj
 
 # Compiled Dynamic libraries
 *.so
