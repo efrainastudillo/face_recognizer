@@ -40,6 +40,10 @@ public:
     void saveToFile(std::string);
     void loadData();
     
+    void clean(){
+        _images.clear();
+    };
+    
     
     Eigen::MatrixXd data;
     Eigen::Matrix<int, Eigen::Dynamic, 1> labels;

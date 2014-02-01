@@ -27,7 +27,9 @@ public:
     AIStatus processing_image(cv::Mat&);
     void update();
     void draw(ci::Rectf bounds);
-    AIDataSet& get_dataSet(){return mDataSet;};
+    AIDataSet& get_dataSet(){
+        return this->mDataSet;
+    };
     
     
     void enableTraining(bool);

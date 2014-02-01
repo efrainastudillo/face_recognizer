@@ -24,8 +24,26 @@ enum AIStatus{AI_STATUS_OK,
 
 #define LOG(msg) (std::cout<<"[ AI ] => "<<msg<<std::endl);
 
-inline static void STL2EIGEN(std::multimap<int, cv::Mat> &data,Eigen::MatrixXd& X){
+inline static void STL2EIGEN(std::multimap<int, cv::Mat> &data,Eigen::MatrixXd& X,Eigen::Matrix<int, Eigen::Dynamic, 1>& y){
+    std::multimap<int, cv::Mat>::iterator iter = data.begin();
     
+    int indexY = 0,indexXrow = 0,indexXcol = 0;
+    while (iter != data.end())
+    {
+        y(indexY) = iter->first;
+        indexXcol = 0;
+        for (int i = 0; i < iter->second.rows; i++)
+        {
+            for (int j = 0; j < iter->second.cols; j++)
+            {
+                X(indexXrow,indexXcol) = iter->second.at<uchar>(i, j);
+                indexXcol ++;
+            }
+        }
+        indexXrow ++;
+        indexY++;
+        iter++;
+    }
 };
 inline static void EIGEN2STL(){
 

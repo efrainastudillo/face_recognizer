@@ -12,6 +12,8 @@ AIBuilder::AIBuilder(_AITecnique& tec, _AIClassifier& cla) : mTecnique(&tec),mCl
 
 }
 
-void AIBuilder::compute(const Eigen::MatrixXd& X, const Eigen::Matrix<int, Eigen::Dynamic, 1>& y){}
+void AIBuilder::compute(const Eigen::MatrixXd& X, const Eigen::Matrix<int, Eigen::Dynamic, 1>& y){
+    
+}
 
 void AIBuilder::predict(){}

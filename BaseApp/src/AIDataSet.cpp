@@ -22,7 +22,18 @@ AIDataSet::~AIDataSet(){
 
 }
 void AIDataSet::loadData(){
-    STL2EIGEN(_images, data);
+    int rows = _images.size();
+    int cols = _images.begin()->second.cols * _images.begin()->second.rows;
+    LOG(rows)
+    LOG(cols)
+    data = Eigen::MatrixXd(rows,cols);
+    labels = Eigen::Matrix<int, Eigen::Dynamic, 1>(rows);
+    
+    
+    //funcion inline que contruye una matriz Eigen a partir de un multimap
+    STL2EIGEN(_images, data,labels);
+    LOG(data.size())
+    LOG(labels.size())
 }
 
 void AIDataSet::saveImage(int index, cv::Mat img){
@@ -72,9 +83,6 @@ void AIDataSet::saveToFile(std::string filename){
      }
      
      fout.close();
-     
-     //remove all data to free memory
-     _images.clear();
 }
 
 
