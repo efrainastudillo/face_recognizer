@@ -13,7 +13,6 @@
 #include "AIUtil.h"
 
 #include <iostream>
-#include <CinderOpenCV.h>
 #include <fstream>
 
 namespace fs = boost::filesystem;
@@ -22,25 +21,28 @@ class AIDataSet{
 public:
 
     AIDataSet();
-    AIDataSet(std::string,std::string);
     ~AIDataSet();
-    
+    /*
     AIStatus read_images(std::string);
     
-    /**
-        Save images to a file. Each image is contained in a row of the file
-     */
+    
+    //    Save images to a file. Each image is contained in a row of the file
+     
 	AIStatus save_images(std::string);
     
-    /*
-        Load csv file with the images previously saved
-     */
-    AIStatus load_data(std::string);
     
+    //    Load csv file with the images previously saved
+     
+    AIStatus load_data(std::string);
+    */
     void saveImage(int index,cv::Mat);
     void saveUser(int index,std::string);
     void saveToFile(std::string);
-
+    void loadData();
+    
+    
+    Eigen::MatrixXd data;
+    Eigen::Matrix<int, Eigen::Dynamic, 1> labels;
     
 private:
     

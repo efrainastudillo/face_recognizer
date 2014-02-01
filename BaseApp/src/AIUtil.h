@@ -10,6 +10,9 @@
 #define FaceRecognizer_AIUtil_h
 
 #include <iostream>
+#include "Eigen/Dense"
+
+#include <CinderOpenCV.h>
 
 enum AIStatus{AI_STATUS_OK,
     AI_STATUS_ERROR,
@@ -20,6 +23,14 @@ enum AIStatus{AI_STATUS_OK,
 };
 
 #define LOG(msg) (std::cout<<"[ AI ] => "<<msg<<std::endl);
+
+inline static void STL2EIGEN(std::multimap<int, cv::Mat> &data,Eigen::MatrixXd& X){
+    
+};
+inline static void EIGEN2STL(){
+
+};
+
 
 #ifdef __APPLE__
 #define __IMAGES_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/BaseApp/resources/"

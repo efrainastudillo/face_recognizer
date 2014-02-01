@@ -21,6 +21,7 @@
 #include "AITextInput.h"
 #include "AIButton.h"
 #include "AIDataSet.h"
+#include "AIBuilder.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -42,6 +43,17 @@ public:
 	gl::Texture mImage;
     
     std::string mMessage;
+    
+    
+    //////////////////////////////////////
+    //      Artificial Intelligence     //
+    //////////////////////////////////////
+    AIBuilder mBuilder;
+    AIPca mPca;
+    AILda mLda;
+    AINearestNeighbor mNN;
+    AIDataSet mDataSet;
+    
     
     AIButton mTrainButton,mBuildButton,mPredictButton;
     AIButton mSaveDataButton,mSaveModelButton;
@@ -93,6 +105,14 @@ void TutorialApp::setup()
     mCamera.initialize();
     mTextInput.initialize();
     
+    
+    //===============     Artificial Intelligence       ================//
+    mLda = AILda();
+    mNN = AINearestNeighbor();
+    mDataSet = mCamera.get_dataSet();
+    mBuilder = AIBuilder(mLda, mNN);
+    
+    
     mMessage = "! Bienvenido !";
     getWindow()->getSignalDisplayChange().connect( std::bind( &TutorialApp::displayChange, this ) );
 	
@@ -136,7 +156,7 @@ void TutorialApp::mouseDown(cinder::app::MouseEvent event){
     }
     else if(mBuildButton.isEvent())
     {
-        
+        //mBuilder.compute(mDataSet.data, mDataSet.labels);
     }
     else if (mPredictButton.isEvent())
     {

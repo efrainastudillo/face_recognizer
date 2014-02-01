@@ -21,6 +21,9 @@ AIDataSet::AIDataSet(){
 AIDataSet::~AIDataSet(){
 
 }
+void AIDataSet::loadData(){
+    STL2EIGEN(_images, data);
+}
 
 void AIDataSet::saveImage(int index, cv::Mat img){
     _images.insert(std::make_pair(index, img));
@@ -75,10 +78,10 @@ void AIDataSet::saveToFile(std::string filename){
 }
 
 
-
+/*
 
 AIStatus AIDataSet::save_images(std::string filename){
-   /* std::ofstream fout(filename);
+    std::ofstream fout(filename);
     if(!fout)
     {
         LOG("File Not Opened")
@@ -119,12 +122,12 @@ AIStatus AIDataSet::save_images(std::string filename){
     
     //remove all data to free memory
     _images.clear();
-    */
+ 
     return AIStatus::AI_STATUS_OK;
 }
 
 AIStatus AIDataSet::load_data(std::string filename){
-    /*std::ifstream data_images(filename);
+    std::ifstream data_images(filename);
     if (!data_images.is_open()) {
         LOG("file cant open to read data of the images")
         return AIStatus::AI_STATUS_CANT_OPEN_FILE;
@@ -152,14 +155,14 @@ AIStatus AIDataSet::load_data(std::string filename){
         }
     
     }
-    */
+ 
     return AIStatus::AI_STATUS_OK;
 }
 
 //Read the images from ode disk a pre-processing to save a file
 //Each directory contains a set of images of each person
 AIStatus AIDataSet::read_images(std::string path){
-    /*
+ 
     _path = fs::path(path);
     _classifier = cv::CascadeClassifier();
     
@@ -207,6 +210,6 @@ AIStatus AIDataSet::read_images(std::string path){
             class_code += 1;
         }
     }
-     */
+ 
     return AIStatus::AI_STATUS_OK;
-}
+}*/
