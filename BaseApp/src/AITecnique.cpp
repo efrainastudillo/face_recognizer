@@ -14,25 +14,10 @@ AIPca::AIPca(){
 
 }
 
-AIModel::TrainingModel AIPca::_compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y){
-    AIModel::TrainingModel trainingModel;
+AIModel::TrainingValue AIPca::_compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y){
 	AIModel::TrainingValue training;
-
 	AIPca::pca(training, X, y, 0);
-
-	trainingModel.W = training.eigenVectors;
-	trainingModel.y = y;
-	trainingModel.mu = training.mu;
-	trainingModel.projections = std::vector<MatrixXd>();
-
-	//MatrixXd projection(X.rows(), trainingModel.W.cols());
-	MatrixXd projection;
-	for (int i = 0; i < X.rows(); ++i){
-		project(projection, trainingModel.W, X.row(i), trainingModel.mu);
-		trainingModel.projections.push_back(projection);
-	}
-
-    return trainingModel;
+    return training;
 }
 
 void AIPca::_extract(){}
@@ -112,26 +97,10 @@ AILda::AILda(){
 
 }
 
-AIModel::TrainingModel AILda::_compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y){
-    AIModel::TrainingModel trainingModel;
-    
+AIModel::TrainingValue AILda::_compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y){
     AIModel::TrainingValue training;
-
 	AILda::ldaOptimizedW(training, X, y, 0);
-
-	trainingModel.W = training.eigenVectors;
-	trainingModel.y = y;
-	trainingModel.mu = training.mu;
-	trainingModel.projections = std::vector<MatrixXd>();
-
-	//MatrixXd projection(X.rows(), trainingModel.W.cols());
-	MatrixXd projection;
-	for (int i = 0; i < X.rows(); ++i){
-		project(projection, trainingModel.W, X.row(i), trainingModel.mu);
-		trainingModel.projections.push_back(projection);
-	}
-    
-    return trainingModel;
+    return training;
 }
 
 void AILda::_extract(){}
@@ -243,49 +212,3 @@ void AILda::ldaOptimizedW(AIModel::TrainingValue& training, const Eigen::MatrixX
 	training.mu = trainingPCA.mu;
 }
 
-
-
-void project(Eigen::MatrixXd& projection, const Eigen::MatrixXd& W, const Eigen::MatrixXd& X, Eigen::RowVectorXd mu){
-	Eigen::MatrixXd Xw = X;
-	for (int i = 0; i < X.rows(); i++){
-		Xw.row(i) = X.row(i) - mu;
-	}
-	projection = Xw * W;
-}
-
-bool comparatorPairEigenValue(const std::pair<double, int>& l,const std::pair<double, int>& r){
-	return l.first > r.first;
-}
-
-
-
-Eigen::MatrixXd MatrixMinusRowVector(const Eigen::MatrixXd& matrix, Eigen::RowVectorXd& rowVector){
-	MatrixXd Xw(matrix.rows(), matrix.cols());
-
-	for (int i = 0; i < matrix.rows(); i++){
-		Xw.row(i) = matrix.row(i) - rowVector;
-	}
-
-	return Xw;
-}
-
-Eigen::RowVectorXd meanRow(const Eigen::MatrixXd& X){
-	RowVectorXd totalMean = RowVectorXd::Zero(X.cols());
-	for (int i = 0; i < X.rows(); i++){
-		totalMean = totalMean + X.row(i);
-	}
-	totalMean = totalMean / X.rows();
-	return totalMean;
-}
-
-std::vector<AIModel::DataLabel> uniqueFromVector(const AIModel::Eigen_VectorXx& colVector){
-	std::vector<AIModel::DataLabel> C;
-
-	for (int i = 0; i < colVector.size(); ++i){
-		if (std::find(C.begin(), C.end(), colVector(i)) == C.end()){//no contains
-			C.push_back(colVector(i));
-		}
-	}
-
-	return C;
-}

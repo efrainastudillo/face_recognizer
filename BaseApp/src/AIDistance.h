@@ -11,6 +11,8 @@
 
 #include<iostream>
 #include <opencv2/opencv.hpp>
+#include <Eigen/Core>
+#include <Eigen/Dense>
 
 class _AIDistance{
 private:
@@ -18,7 +20,7 @@ private:
 public:
     _AIDistance(std::string);
     // virtual function, make a class abstract
-    virtual double compute() = 0;
+    virtual double compute(const Eigen::MatrixXd& P, const Eigen::MatrixXd& Q) = 0;
     
     std::string get_name();
     
@@ -27,6 +29,6 @@ public:
 class AIEuclideanDistance : public _AIDistance{
 public:
     AIEuclideanDistance();
-    double compute(cv::vector<int>&,cv::vector<int>&);
+    double compute(const Eigen::MatrixXd& P, const Eigen::MatrixXd& Q);
 };
 #endif

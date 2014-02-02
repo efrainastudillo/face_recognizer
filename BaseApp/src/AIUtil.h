@@ -11,8 +11,10 @@
 
 #include <iostream>
 #include "Eigen/Dense"
-
+#include "AIModel.h"
 #include <CinderOpenCV.h>
+
+using namespace Eigen;
 
 enum AIStatus{AI_STATUS_OK,
     AI_STATUS_ERROR,
@@ -49,6 +51,52 @@ inline static void EIGEN2STL(){
 
 };
 
+
+
+inline static void project(Eigen::MatrixXd& projection, const Eigen::MatrixXd& W, const Eigen::MatrixXd& X, Eigen::RowVectorXd mu){
+	Eigen::MatrixXd Xw = X;
+	for (int i = 0; i < X.rows(); i++){
+		Xw.row(i) = X.row(i) - mu;
+	}
+	projection = Xw * W;
+};
+
+inline static bool comparatorPairEigenValue(const std::pair<double, int>& l,const std::pair<double, int>& r){
+	return l.first > r.first;
+};
+
+
+
+inline static Eigen::MatrixXd MatrixMinusRowVector(const Eigen::MatrixXd& matrix, Eigen::RowVectorXd& rowVector){
+	MatrixXd Xw(matrix.rows(), matrix.cols());
+
+	for (int i = 0; i < matrix.rows(); i++){
+		Xw.row(i) = matrix.row(i) - rowVector;
+	}
+
+	return Xw;
+};
+
+inline static Eigen::RowVectorXd meanRow(const Eigen::MatrixXd& X){
+	RowVectorXd totalMean = RowVectorXd::Zero(X.cols());
+	for (int i = 0; i < X.rows(); i++){
+		totalMean = totalMean + X.row(i);
+	}
+	totalMean = totalMean / X.rows();
+	return totalMean;
+};
+
+inline static std::vector<AIModel::DataLabel> uniqueFromVector(const AIModel::Eigen_VectorXx& colVector){
+	std::vector<AIModel::DataLabel> C;
+
+	for (int i = 0; i < colVector.size(); ++i){
+		if (std::find(C.begin(), C.end(), colVector(i)) == C.end()){//no contains
+			C.push_back(colVector(i));
+		}
+	}
+
+	return C;
+};
 
 #ifdef __APPLE__
 #define __IMAGES_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/BaseApp/resources/"

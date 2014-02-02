@@ -22,6 +22,7 @@
 #include "AIButton.h"
 #include "AIDataSet.h"
 #include "AIBuilder.h"
+#include "AIDistance.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -48,10 +49,11 @@ public:
     //////////////////////////////////////
     //      Artificial Intelligence     //
     //////////////////////////////////////
-    AIBuilder mBuilder;
-    AIPca mPca;
-    AILda mLda;
-    AINearestNeighbor mNN;
+    AIBuilder *mBuilder;
+    AIPca *mPca;
+    AILda *mLda;
+    AINearestNeighbor *mNN;
+	AIEuclideanDistance *mED;
     AIDataSet mDataSet;
     
     
@@ -107,10 +109,11 @@ void TutorialApp::setup()
     
     
     //===============     Artificial Intelligence       ================//
-    mLda = AILda();
-    mNN = AINearestNeighbor();
+    mLda = new AILda();	
+	mED = new AIEuclideanDistance();
+    mNN = new AINearestNeighbor(*mED);
     mDataSet = mCamera.get_dataSet();
-    mBuilder = AIBuilder(mLda, mNN);
+    mBuilder = new AIBuilder(*mLda, *mNN);
     
     
     mMessage = "! Bienvenido !";
@@ -160,7 +163,8 @@ void TutorialApp::mouseDown(cinder::app::MouseEvent event){
         console()<< "Data Size: "<<mCamera.mDataSet.data.size()<<std::endl;
         console()<< "Labels Size: "<<mCamera.mDataSet.labels.size()<<std::endl;
         
-        mBuilder.compute(mCamera.mDataSet.data, mCamera.mDataSet.labels);
+        mBuilder->compute(mCamera.mDataSet.data, mCamera.mDataSet.labels);
+		
     }
     else if (mPredictButton.isEvent())
     {

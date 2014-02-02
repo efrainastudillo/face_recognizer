@@ -13,7 +13,9 @@
 #include <string>
 #include "AIClassifier.h"
 #include "AITecnique.h"
+#include "AIModel.h"
 #include "Eigen/Dense"
+#include "AIFile.h"
 
 class AIBuilder{
 public:
@@ -21,7 +23,7 @@ public:
     AIBuilder():mTecnique(NULL),mClassifier(NULL){};
     AIBuilder(_AITecnique&,_AIClassifier&);
     void compute(const Eigen::MatrixXd& X, const Eigen::Matrix<int, Eigen::Dynamic, 1>& y);
-    void predict();
+    AIModel::DataLabel predict(const Eigen::RowVectorXd& X);
     
     
     _AITecnique *mTecnique;

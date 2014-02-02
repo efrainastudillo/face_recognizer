@@ -21,12 +21,15 @@
 
 #include "AIUtil.h"
 #include "AIModel.h"
+#include "AIDistance.h"
 
 class _AITecnique{
 public:
 
-    virtual AIModel::TrainingModel _compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y) = 0;
+    virtual AIModel::TrainingValue _compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y) = 0;
     virtual void _extract() = 0;
+
+	_AIDistance *mDistance;
 };
 
 
@@ -34,7 +37,7 @@ class AIPca : public _AITecnique{
 public:
     AIPca();
     
-    AIModel::TrainingModel _compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y);
+    AIModel::TrainingValue _compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y);
     void _extract();
 	void pca(AIModel::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents);
     
@@ -44,19 +47,19 @@ class AILda : public _AITecnique{
 public:
     AILda();
     
-    AIModel::TrainingModel _compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y);
+    AIModel::TrainingValue _compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y);
     void _extract();
 	void lda(AIModel::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents);
 	void ldaOptimizedW(AIModel::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents);
     
 };
 
-
+/*
 Eigen::RowVectorXd meanRow(const Eigen::MatrixXd& X);
 Eigen::MatrixXd MatrixMinusRowVector(const Eigen::MatrixXd& matrix, Eigen::RowVectorXd& rowVector);
 std::vector<AIModel::DataLabel> uniqueFromVector(const AIModel::Eigen_VectorXx& colVector);
 
 void project(Eigen::MatrixXd& projection, const Eigen::MatrixXd& W, const Eigen::MatrixXd& X, Eigen::RowVectorXd mu);
-bool comparatorPairEigenValue(const std::pair<double, int>& l, const std::pair<double, int>& r);
+bool comparatorPairEigenValue(const std::pair<double, int>& l, const std::pair<double, int>& r);*/
 
 #endif

@@ -22,8 +22,6 @@ AIEuclideanDistance::AIEuclideanDistance():_AIDistance("Euclidean Distance"){
     // initialize instance concrete
 }
 
-
-double AIEuclideanDistance::compute(cv::vector<int> &v1,cv::vector<int> &v2){
-    
-    return 0.0L;
+double AIEuclideanDistance::compute(const Eigen::MatrixXd& P, const Eigen::MatrixXd& Q){
+	return sqrt((P - Q).array().pow(2).sum());
 }
