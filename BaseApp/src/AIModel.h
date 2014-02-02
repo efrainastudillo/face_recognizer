@@ -25,6 +25,7 @@ public:
 			Eigen::RowVectorXd mu;
 			std::vector<Eigen::MatrixXd> projections;
 		};
+
 };
 
 #endif /* defined(__BaseApp__AIModel__) */

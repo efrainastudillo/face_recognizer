@@ -13,7 +13,9 @@ AIBuilder::AIBuilder(_AITecnique& tec, _AIClassifier& cla) : mTecnique(&tec),mCl
 }
 
 void AIBuilder::compute(const Eigen::MatrixXd& X, const Eigen::Matrix<int, Eigen::Dynamic, 1>& y){
-    //Eigen::MatrixXd p = mTecnique->_compute(X, y);
+	SAVE_AIMODEL(mClassifier->compute(X, y, mTecnique->_compute(X,y)),__MODEL_PATH__);
 }
 
-void AIBuilder::predict(){}
+AIModel::DataLabel AIBuilder::predict(const Eigen::RowVectorXd& X){
+	return mClassifier->predict(X);
+}
