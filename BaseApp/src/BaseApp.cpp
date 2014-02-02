@@ -99,15 +99,14 @@ void TutorialApp::setup()
     mSaveDataButton.setPosition(ci::Rectf(left + width_rect*0.5,top + height_rect*0.53,width_rect*0.45,40));
     mSaveModelButton.setPosition(ci::Rectf(left + width_rect*0.5,top + height_rect*1.53,width_rect*0.45,40));
     
-    //mCamera = new AICamera(&mMessage);
-    mCamera.initialize();
     mTextInput.initialize();
-    
+    mCamera.mDataSet.loadDataFromFile(__TRAINING_PATH__);
+    mCamera.mDataSet.loadNamesFromFile(__TRAINING_NAMES_PATH__);
+    mCamera.initialize();// camera initilization should be before to load names and data from files
     
     //===============     Artificial Intelligence       ================//
     mLda = AILda();
     mNN = AINearestNeighbor();
-    mDataSet = mCamera.get_dataSet();
     mBuilder = AIBuilder(mLda, mNN);
     
     
@@ -154,11 +153,11 @@ void TutorialApp::mouseDown(cinder::app::MouseEvent event){
     }
     else if(mBuildButton.isEvent())
     {
-        mCamera.mDataSet.loadData();
+        //mCamera.mDataSet.loadData();
         console()<< "Data Size: "<<mCamera.mDataSet.data.size()<<std::endl;
         console()<< "Labels Size: "<<mCamera.mDataSet.labels.size()<<std::endl;
         
-        mBuilder.compute(mCamera.mDataSet.data, mCamera.mDataSet.labels);
+        //mBuilder.compute(mCamera.mDataSet.data, mCamera.mDataSet.labels);
     }
     else if (mPredictButton.isEvent())
     {
@@ -166,7 +165,8 @@ void TutorialApp::mouseDown(cinder::app::MouseEvent event){
     }
     else if (mSaveDataButton.isEvent())
     {
-        mCamera.mDataSet.saveToFile(__TRAINING_PATH__);
+        mCamera.mDataSet.saveDataToFile(__TRAINING_PATH__);
+        mCamera.mDataSet.saveNamesToFile(__TRAINING_NAMES_PATH__);
     }
     else if (mSaveModelButton.isEvent())
     {

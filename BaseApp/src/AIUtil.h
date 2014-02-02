@@ -54,8 +54,9 @@ inline static void EIGEN2STL(){
 #define __IMAGES_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/BaseApp/resources/"
 #define __IMAGES_PATH_TEST__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/imagesTest/"
 #define __HAARCASCADE_PATH__ "/Users/efrainastudillo/Documents/Development/opencv/data/haarcascades/haarcascade_frontalface_alt.xml"
-#define __TRAINING_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/BaseApp/resources/images_training.csv"
-#define __TEST_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/BaseApp/resources/images_test.csv"
+#define __TRAINING_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/BaseApp/resources/images_training.csv"
+#define __TRAINING_NAMES_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/BaseApp/resources/names_training.csv"
+#define __TEST_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/BaseApp/resources/images_test.csv"
 #define __MODEL_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/trainingModel/"
 
 #elif __PETER__ //Pedro Lucas Path
@@ -65,6 +66,7 @@ inline static void EIGEN2STL(){
 #define __IMAGES_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/images/"
 #define __HAARCASCADE_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/data/haarcascade_frontalface_alt.xml"
 #define __TRAINING_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/testingFiles/images_training.csv"
+#define __TRAINING_NAMES_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/testingFiles/images_names_training.csv"
 #define __TEST_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/testingFiles/images_test.csv"
 #define __MODEL_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/trainingModel/"
 
