@@ -12,6 +12,13 @@ public:
 	typedef int DataLabel;
 	typedef Eigen::Matrix<int, Eigen::Dynamic, 1>  Eigen_VectorXx;
 
+	
+	struct TrainingValue {
+			Eigen::VectorXd eigenValues;
+			Eigen::MatrixXd eigenVectors;
+			Eigen::RowVectorXd mu;
+		};
+
 	struct TrainingModel{
 			Eigen::MatrixXd W;
 			Eigen_VectorXx y;

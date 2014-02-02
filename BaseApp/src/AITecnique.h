@@ -25,12 +25,6 @@
 class _AITecnique{
 public:
 
-	struct TrainingValue {
-			Eigen::VectorXd eigenValues;
-			Eigen::MatrixXd eigenVectors;
-			Eigen::RowVectorXd mu;
-		};
-
     virtual AIModel::TrainingModel _compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y) = 0;
     virtual void _extract() = 0;
 };
@@ -42,7 +36,7 @@ public:
     
     AIModel::TrainingModel _compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y);
     void _extract();
-	void pca(_AITecnique::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents);
+	void pca(AIModel::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents);
     
 };
 
@@ -52,8 +46,8 @@ public:
     
     AIModel::TrainingModel _compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y);
     void _extract();
-	void lda(_AITecnique::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents);
-	void ldaOptimizedW(_AITecnique::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents);
+	void lda(AIModel::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents);
+	void ldaOptimizedW(AIModel::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents);
     
 };
 
