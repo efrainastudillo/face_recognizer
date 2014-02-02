@@ -10,6 +10,7 @@ FaceRecognizer/trainingModel/
 FaceRecognizer/testingFiles/
 BaseApp/BaseApp/
 BaseApp/thirdparty/
+BaseApp/vc10/
 BaseApp/BaseApp.xcodeproj
 
 # Compiled Dynamic libraries
