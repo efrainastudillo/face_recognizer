@@ -13,7 +13,7 @@ AINearestNeighbor::AINearestNeighbor(){
     
 }
 
-bool AINearestNeighbor::compute(const Eigen::MatrixXd& X, const Eigen::Matrix<int, Eigen::Dynamic, 1>& y){
+bool AINearestNeighbor::compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y){
     return true;
 }
 
