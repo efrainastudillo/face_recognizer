@@ -11,12 +11,13 @@
 
 #include <iostream>
 #include "Eigen/Dense"
+#include "AIModel.h"
 
 
 // abstract class
 class _AIClassifier{
 public:
-    virtual bool compute(const Eigen::MatrixXd& X, const Eigen::Matrix<int, Eigen::Dynamic, 1>& y) = 0;
+    virtual bool compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y) = 0;
     virtual void predict() = 0;
 };
 
@@ -24,7 +25,7 @@ class AINearestNeighbor : public _AIClassifier{
 public:
     AINearestNeighbor();
     
-    bool compute(const Eigen::MatrixXd& X, const Eigen::Matrix<int, Eigen::Dynamic, 1>& y);
+    bool compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y);
     void predict();
 };
 

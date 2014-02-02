@@ -11,6 +11,7 @@
 
 #include <iostream>
 
+#include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
 #include "cinder/gl/TextureFont.h"
 #include "cinder/Camera.h"

@@ -91,7 +91,7 @@ void AICamera::update(){
                     _miniTexture = gl::Texture(fromOcv(img));
                     
                     //si el contador no ha llegado a 10?
-                    if(mContador < 10 and getElapsedSeconds() - mSegundos > 2)
+                    if(mContador < 10 && getElapsedSeconds() - mSegundos > 2)
                     {
                         console() << "segundos elapsed: "<<getElapsedSeconds()<<std::endl;
                         // grabar imagen

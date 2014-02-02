@@ -9,7 +9,10 @@ FaceRecognizer.xcodeproj/
 FaceRecognizer/trainingModel/
 FaceRecognizer/testingFiles/
 BaseApp/BaseApp/
+BaseApp/Debug/
+BaseApp/ipch/
 BaseApp/thirdparty/
+BaseApp/vc10/
 BaseApp/BaseApp.xcodeproj
 
 # Compiled Dynamic libraries
@@ -40,3 +43,5 @@ FaceRecognizer/FaceRecognizer/
 *.log
 *.ilk
 *.exe
+*.aps
+*.rc

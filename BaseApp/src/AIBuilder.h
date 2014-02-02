@@ -10,12 +10,14 @@
 #define __BaseApp__AIBuilder__
 
 #include <iostream>
+#include <string>
 #include "AIClassifier.h"
 #include "AITecnique.h"
 #include "Eigen/Dense"
 
 class AIBuilder{
 public:
+
     AIBuilder():mTecnique(NULL),mClassifier(NULL){};
     AIBuilder(_AITecnique&,_AIClassifier&);
     void compute(const Eigen::MatrixXd& X, const Eigen::Matrix<int, Eigen::Dynamic, 1>& y);
