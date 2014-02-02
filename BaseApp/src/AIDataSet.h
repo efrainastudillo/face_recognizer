@@ -36,8 +36,14 @@ public:
     AIStatus load_data(std::string);
     */
     void saveImage(int index,cv::Mat);
-    void saveUser(int index,std::string);
-    void saveToFile(std::string);
+    void saveUser(int index,std::string nombre);
+    void saveDataToFile(std::string filename);
+    void saveNamesToFile(std::string filename);
+    void loadDataFromFile(std::string filename);
+    void loadNamesFromFile(std::string filename);
+    
+    int getLastIndex();
+    
     void loadData();
     
     void clean(){

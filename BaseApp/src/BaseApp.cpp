@@ -22,7 +22,6 @@
 #include "AIButton.h"
 #include "AIDataSet.h"
 #include "AIBuilder.h"
-#include "AIDistance.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -42,18 +41,15 @@ public:
     void displayChange();
 	
 	gl::Texture mImage;
-    
     std::string mMessage;
-    
     
     //////////////////////////////////////
     //      Artificial Intelligence     //
     //////////////////////////////////////
-    AIBuilder *mBuilder;
-    AIPca *mPca;
-    AILda *mLda;
-    AINearestNeighbor *mNN;
-	AIEuclideanDistance *mED;
+    AIBuilder mBuilder;
+    AIPca mPca;
+    AILda mLda;
+    AINearestNeighbor mNN;
     AIDataSet mDataSet;
     
     
@@ -103,17 +99,15 @@ void TutorialApp::setup()
     mSaveDataButton.setPosition(ci::Rectf(left + width_rect*0.5,top + height_rect*0.53,width_rect*0.45,40));
     mSaveModelButton.setPosition(ci::Rectf(left + width_rect*0.5,top + height_rect*1.53,width_rect*0.45,40));
     
-    //mCamera = new AICamera(&mMessage);
-    mCamera.initialize();
     mTextInput.initialize();
-    
+    mCamera.mDataSet.loadDataFromFile(__TRAINING_PATH__);
+    mCamera.mDataSet.loadNamesFromFile(__TRAINING_NAMES_PATH__);
+    mCamera.initialize();// camera initilization should be before to load names and data from files
     
     //===============     Artificial Intelligence       ================//
-    mLda = new AILda();	
-	mED = new AIEuclideanDistance();
-    mNN = new AINearestNeighbor(*mED);
-    mDataSet = mCamera.get_dataSet();
-    mBuilder = new AIBuilder(*mLda, *mNN);
+    mLda = AILda();
+    mNN = AINearestNeighbor();
+    mBuilder = AIBuilder(mLda, mNN);
     
     
     mMessage = "! Bienvenido !";
@@ -125,7 +119,7 @@ void TutorialApp::displayChange()
 {
 	console() << "Window display changed: " << getWindow()->getDisplay()->getBounds() << std::endl;
 	console() << "ContentScale = " << getWindowContentScale() << std::endl;
-	console() << "getWindowCenter() = " << getWindowCenter() << std::endl;
+	console() << "getfWindowCenter() = " << getWindowCenter() << std::endl;
 }
 
 void TutorialApp::keyDown(ci::app::KeyEvent event){
@@ -159,12 +153,11 @@ void TutorialApp::mouseDown(cinder::app::MouseEvent event){
     }
     else if(mBuildButton.isEvent())
     {
-        mCamera.mDataSet.loadData();
+        //mCamera.mDataSet.loadData();
         console()<< "Data Size: "<<mCamera.mDataSet.data.size()<<std::endl;
         console()<< "Labels Size: "<<mCamera.mDataSet.labels.size()<<std::endl;
         
-        mBuilder->compute(mCamera.mDataSet.data, mCamera.mDataSet.labels);
-		
+        //mBuilder.compute(mCamera.mDataSet.data, mCamera.mDataSet.labels);
     }
     else if (mPredictButton.isEvent())
     {
@@ -172,7 +165,8 @@ void TutorialApp::mouseDown(cinder::app::MouseEvent event){
     }
     else if (mSaveDataButton.isEvent())
     {
-        mCamera.mDataSet.saveToFile(__TRAINING_PATH__);
+        mCamera.mDataSet.saveDataToFile(__TRAINING_PATH__);
+        mCamera.mDataSet.saveNamesToFile(__TRAINING_NAMES_PATH__);
     }
     else if (mSaveModelButton.isEvent())
     {

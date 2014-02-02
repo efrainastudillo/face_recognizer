@@ -16,7 +16,7 @@ void AICamera::initialize(){
     mIsTraining = false;
     mContador = 0;
     mSegundos = 0;
-    mContadorUsuario = 0;
+    mContadorUsuario = mDataSet.getLastIndex();
     
     try {
         _capture = ci::Capture(640,480);
