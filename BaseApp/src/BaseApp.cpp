@@ -217,7 +217,7 @@ void TutorialApp::draw()
     // The title
     std::string msg = "Face Recognizer";
 	float stringWidth = mFont.getStringWidth(msg);
-    mFont.draw(msg, Vec2f( getWindowWidth()/2 - stringWidth/2, 80 ),1.f);
+    mFont.draw(msg, Vec2f( getWindowWidth()/2 - stringWidth/2, 60 ),1.f);
     
     ci::gl::drawStrokedRect(ci::Rectf(getWindowWidth()/2 + 50, top, right,top + height_rect - gap));
     ci::gl::drawStrokedRect(ci::Rectf(getWindowWidth()/2 + 50, top + height_rect, right,top + height_rect*2 - gap));
