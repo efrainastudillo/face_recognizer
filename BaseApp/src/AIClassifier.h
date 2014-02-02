@@ -22,7 +22,7 @@
 class _AIClassifier{
 public:
 
-	//_AIClassifier():mDistance(NULL){};
+	_AIClassifier():mDistance(NULL){};
     _AIClassifier(_AIDistance&);
 	virtual AIModel::TrainingModel compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, const AIModel::TrainingValue& trainingValue) = 0;
     virtual AIModel::DataLabel predict(const Eigen::RowVectorXd& X) = 0;
@@ -33,7 +33,7 @@ public:
 class AINearestNeighbor : public _AIClassifier{
 public:
 
-    //AINearestNeighbor();
+    AINearestNeighbor();
     AINearestNeighbor(_AIDistance&);
     
     AIModel::TrainingModel compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, const AIModel::TrainingValue& trainingValue);

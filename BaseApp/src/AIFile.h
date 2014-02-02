@@ -3,6 +3,7 @@
 #define FaceRecognizer_AIFile_h
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -86,7 +87,6 @@ inline static void SAVE_AIMODEL(const AIModel::TrainingModel& trainingModel, std
 
 };
 //Read Model
-
 
 inline static void ReadMatrix(Eigen::MatrixXd& X, std::string filename){
 	std::ifstream data(filename);

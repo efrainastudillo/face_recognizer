@@ -46,12 +46,12 @@ public:
     //////////////////////////////////////
     //      Artificial Intelligence     //
     //////////////////////////////////////
-    AIBuilder *mBuilder;
-    AIPca *mPca;
-    AILda *mLda;
-    AINearestNeighbor *mNN;
+    AIBuilder mBuilder;
+    AIPca mPca;
+    AILda mLda;
+    AINearestNeighbor mNN;
     AIDataSet mDataSet;
-    
+    AIEuclideanDistance mED;
     
     AIButton mTrainButton,mBuildButton,mPredictButton;
     AIButton mSaveDataButton,mSaveModelButton;
@@ -105,9 +105,10 @@ void TutorialApp::setup()
     mCamera.initialize();// camera initilization should be before to load names and data from files
     
     //===============     Artificial Intelligence       ================//
-    //mLda = AILda();
-    //mNN = AINearestNeighbor();
-    //mBuilder = AIBuilder(mLda, mNN);
+    mLda = AILda();
+    mED = AIEuclideanDistance();
+    mNN = AINearestNeighbor(mED);
+    mBuilder = AIBuilder(mLda, mNN);
     
     
     mMessage = "! Bienvenido !";

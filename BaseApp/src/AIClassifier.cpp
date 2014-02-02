@@ -14,6 +14,8 @@ _AIClassifier::_AIClassifier(_AIDistance& dist) : mDistance(&dist){
 	
 }
 
+AINearestNeighbor::AINearestNeighbor(){}
+
 AINearestNeighbor::AINearestNeighbor(_AIDistance& dist) : _AIClassifier(dist){
 
 }
