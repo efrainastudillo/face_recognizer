@@ -496,7 +496,6 @@ void AITraining::lda(AITraining::TrainingValue& training, const Eigen::MatrixXd&
 	//VectorXx Y = y;
 	//Write_CSV(training.eigenVectors, Y, "D:/AIProject/Tests/eigenVectors.csv");
 
-
 }
 
 void AITraining::ldaOptimizedW(AITraining::TrainingValue& training, const Eigen::MatrixXd& X, const AITraining::Eigen_VectorXx& y, int numComponents){

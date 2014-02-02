@@ -25,9 +25,11 @@ AILda::AILda(){
 }
 
 Eigen::MatrixXd AILda::_compute(const Eigen::MatrixXd& X, const Eigen::Matrix<int, Eigen::Dynamic, 1>& y){
-    Eigen::MatrixXd m;
+    Eigen::MatrixXd SW;
     
-    return m;
+    
+    
+    return SW;
 }
 
 void AILda::_extract(){}

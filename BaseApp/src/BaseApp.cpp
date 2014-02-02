@@ -82,11 +82,11 @@ void TutorialApp::setup()
     
     int top = getWindowHeight() * 0.15f;
     int bottom = getWindowHeight() * 0.8f;
-    int left = getWindowWidth()/2 + 70;
-    //int right = getWindowWidth() * 0.9f;
+    int left = getWindowWidth()/2 + 60;
+    int right = getWindowWidth() * 0.9f;
     
     int height_rect = (bottom - top) / 3;
-
+    int width_rect = (right - left);
     mTrainButton.setText("Capture",mFont);
     mBuildButton.setText("Build",mFont);
     mPredictButton.setText("Predict",mFont);
@@ -94,12 +94,12 @@ void TutorialApp::setup()
     mSaveDataButton.setText("Save Data", mFont);
     mSaveModelButton.setText("Save Model", mFont);
     
-    mTrainButton.setPosition(ci::Rectf(left,top + height_rect*0.6,230,50));
-    mBuildButton.setPosition(ci::Rectf(left,top + height_rect*1.6,230,50));
-    mPredictButton.setPosition(ci::Rectf(left,top + height_rect*2.6,230,50));
+    mTrainButton.setPosition(ci::Rectf(left,top + height_rect*0.53,width_rect*0.45,40));
+    mBuildButton.setPosition(ci::Rectf(left,top + height_rect*1.53,width_rect*0.45,40));
+    mPredictButton.setPosition(ci::Rectf(left,top + height_rect*2.53,width_rect*0.45,40));
     
-    mSaveDataButton.setPosition(ci::Rectf(left + 250,top + height_rect*0.6,230,50));
-    mSaveModelButton.setPosition(ci::Rectf(left + 250,top + height_rect*1.6,230,50));
+    mSaveDataButton.setPosition(ci::Rectf(left + width_rect*0.5,top + height_rect*0.53,width_rect*0.45,40));
+    mSaveModelButton.setPosition(ci::Rectf(left + width_rect*0.5,top + height_rect*1.53,width_rect*0.45,40));
     
     //mCamera = new AICamera(&mMessage);
     mCamera.initialize();
@@ -218,8 +218,8 @@ void TutorialApp::draw()
     gl::color(Color::white());
     // The title
     std::string msg = "Face Recognizer";
-	float stringWidth = mFont.getStringWidth(msg) * 1.5;
-    mFont.draw(msg, Vec2f( getWindowWidth()/2 - stringWidth/2, 80 ),1.5f);
+	float stringWidth = mFont.getStringWidth(msg);
+    mFont.draw(msg, Vec2f( getWindowWidth()/2 - stringWidth/2, 80 ),1.f);
     
     ci::gl::drawStrokedRect(ci::Rectf(getWindowWidth()/2 + 50, top, right,top + height_rect - gap));
     ci::gl::drawStrokedRect(ci::Rectf(getWindowWidth()/2 + 50, top + height_rect, right,top + height_rect*2 - gap));

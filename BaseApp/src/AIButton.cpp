@@ -33,10 +33,10 @@ void AIButton::draw(ci::Color color){
         ci::gl::color(ci::Color(0.7,0.7,1.0));
     }
     ci::gl::drawSolidRect(ci::Rectf(mRect.x1,mRect.y1,mRect.x1 + mRect.x2, mRect.y1 + mRect.y2));
-    int lengthText = mFont.getStringWidth(mText);
+    int lengthText = mFont.getStringWidth(mText)*0.4f;
     
     ci::gl::color(ci::Color::white());
-    mFont.draw(mText, ci::Vec2d(mRect.x1 + 30 + (mRect.x2/2 - lengthText/2),mRect.y1 + mRect.y2 - 15),0.7f);
+    mFont.draw(mText, ci::Vec2d(mRect.x1 + (mRect.x2/2 - lengthText/2), mRect.y1 + mRect.y2 - 12),0.4f);
 }
 
 void AIButton::MouseDown(ci::app::MouseEvent mouse){
