@@ -282,9 +282,9 @@ void AITraining::SaveProjections(const std::vector<Eigen::MatrixXd>& projections
 	fout.close();
 }
 
-void AITraining::Read_CSV(Eigen::MatrixXd& X, AITraining::Eigen_VectorXx& y, std::string filename){
-
-	std::ifstream data(filename);
+void AITraining::Read_CSV(Eigen::MatrixXd& X, AITraining::Eigen_VectorXx& y, std::string filename)
+{
+    std::ifstream data(filename);
 	if (!data.is_open()) {
 		LOG("file cant open to read data ")
 		return;

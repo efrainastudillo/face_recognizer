@@ -41,9 +41,7 @@ public:
     void displayChange();
 	
 	gl::Texture mImage;
-    
     std::string mMessage;
-    
     
     //////////////////////////////////////
     //      Artificial Intelligence     //
@@ -122,7 +120,7 @@ void TutorialApp::displayChange()
 {
 	console() << "Window display changed: " << getWindow()->getDisplay()->getBounds() << std::endl;
 	console() << "ContentScale = " << getWindowContentScale() << std::endl;
-	console() << "getWindowCenter() = " << getWindowCenter() << std::endl;
+	console() << "getfWindowCenter() = " << getWindowCenter() << std::endl;
 }
 
 void TutorialApp::keyDown(ci::app::KeyEvent event){
