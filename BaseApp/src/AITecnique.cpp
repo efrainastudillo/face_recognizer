@@ -16,9 +16,9 @@ AIPca::AIPca(){
 
 AIModel::TrainingModel AIPca::_compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y){
     AIModel::TrainingModel trainingModel;
-	_AITecnique::TrainingValue training;
+	AIModel::TrainingValue training;
 
-	pca(training, X, y, 0);
+	AIPca::pca(training, X, y, 0);
 
 	trainingModel.W = training.eigenVectors;
 	trainingModel.y = y;
@@ -36,7 +36,7 @@ AIModel::TrainingModel AIPca::_compute(const Eigen::MatrixXd& X, const AIModel::
 }
 
 void AIPca::_extract(){}
-void pca(_AITecnique::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents){
+void AIPca::pca(AIModel::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents){
 	int n = X.rows();
 	int d = X.cols();
 
@@ -115,9 +115,9 @@ AILda::AILda(){
 AIModel::TrainingModel AILda::_compute(const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y){
     AIModel::TrainingModel trainingModel;
     
-    _AITecnique::TrainingValue training;
+    AIModel::TrainingValue training;
 
-	ldaOptimizedW(training, X, y, 0);
+	AILda::ldaOptimizedW(training, X, y, 0);
 
 	trainingModel.W = training.eigenVectors;
 	trainingModel.y = y;
@@ -136,7 +136,7 @@ AIModel::TrainingModel AILda::_compute(const Eigen::MatrixXd& X, const AIModel::
 
 void AILda::_extract(){}
 
-void lda(_AITecnique::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents){
+void AILda::lda(AIModel::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents){
 	
 	int n = X.rows();
 	int d = X.cols();
@@ -215,7 +215,7 @@ void lda(_AITecnique::TrainingValue& training, const Eigen::MatrixXd& X, const A
 }
 
 
-void ldaOptimizedW(_AITecnique::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents){
+void AILda::ldaOptimizedW(AIModel::TrainingValue& training, const Eigen::MatrixXd& X, const AIModel::Eigen_VectorXx& y, int numComponents){
 	int n = X.rows();
 	int d = X.cols();
 
@@ -223,9 +223,9 @@ void ldaOptimizedW(_AITecnique::TrainingValue& training, const Eigen::MatrixXd& 
 
 	int c = uniqueFromVector(y).size();
 
-	_AITecnique::TrainingValue trainingPCA, trainingLDA;
-
-	pca(trainingPCA, X, y, (n - c));
+	AIModel::TrainingValue trainingPCA, trainingLDA;
+	AIPca pcaTecnique;
+	pcaTecnique.pca(trainingPCA, X, y, (n - c));
 
 	
 
@@ -234,7 +234,7 @@ void ldaOptimizedW(_AITecnique::TrainingValue& training, const Eigen::MatrixXd& 
 
 	//Write_CSV(trainingPCA.eigenVectors, y, "D:/AIProject/Tests/matrixW.csv");
 
-	lda(trainingLDA, projectionPCA_X, y, numComponents);
+	AILda::lda(trainingLDA, projectionPCA_X, y, numComponents);
 
 	
 
