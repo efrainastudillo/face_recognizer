@@ -23,6 +23,7 @@ void AICamera::initialize(){
     
     
     //initilialize training
+    mIsPredicting = false;
     mIsTraining = false;
     mContador = 0;
     mSegundos = 0;
@@ -125,11 +126,15 @@ void AICamera::update(){
                 AIStatus sTemp= processing_image(img);
                 if (sTemp == AI_STATUS_OK)
                 {
+                    //para mostrar el el mini-rostro en la parte superior izquierda, encima de la imagen
+                    _miniTexture = gl::Texture(fromOcv(img));
+                    
                     Eigen::RowVectorXd tImagen(img.cols*img.rows);
+                    CV2EIGEN(img, tImagen);
                     if(getElapsedSeconds() - mSegundos > 1)
                     {
                         claseUsuario =  mBuilder.predict(tImagen);
-                        mDataSet.getNameById(claseUsuario);
+                        LOG(mDataSet.getNameById(claseUsuario))
                         mSegundos = getElapsedSeconds();
                     }
                 }

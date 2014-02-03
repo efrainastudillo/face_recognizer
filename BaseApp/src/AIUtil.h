@@ -29,7 +29,7 @@ enum AIStatus{AI_STATUS_OK,
 inline static void CV2EIGEN(cv::Mat& img, Eigen::RowVectorXd& output){
     for (int i = 0 ; i < img.rows; i++) {
         for (int j = 0; j < img.cols; j++) {
-            output << (int)img.at<uchar>(i,j);
+            output(i*img.rows + j) = (int)img.at<uchar>(i,j);
         }
     }
 };

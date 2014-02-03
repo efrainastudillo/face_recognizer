@@ -149,7 +149,7 @@ void TutorialApp::mouseDown(cinder::app::MouseEvent event){
     }
     else if (mPredictButton.isEvent())
     {
-			//mBuilder.
+        mCamera.enablePredicting(true);
     }
     else if (mSaveDataButton.isEvent())
     {
