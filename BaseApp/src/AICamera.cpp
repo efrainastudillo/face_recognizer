@@ -12,6 +12,16 @@ AICamera::AICamera(){
 }
 
 void AICamera::initialize(){
+    mDataSet.loadDataFromFile(__TRAINING_PATH__);
+    mDataSet.loadNamesFromFile(__TRAINING_NAMES_PATH__);
+    
+    //===============     Artificial Intelligence       ================//
+    mLda = AILda();
+    mED = AIEuclideanDistance();
+    mNN = AINearestNeighbor(mED);
+    mBuilder = AIBuilder(mLda, mNN);
+    
+    
     //initilialize training
     mIsTraining = false;
     mContador = 0;
@@ -81,12 +91,11 @@ void AICamera::update(){
         {
             _texture = gl::Texture(_capture.getSurface());
             if (mIsTraining)
-            {
+            {   enablePredicting(false);
                 cv::Mat img(toOcv(_capture.getSurface()));
                 AIStatus sTemp= processing_image(img);
                 if (sTemp == AI_STATUS_OK)
                 {
-                    
                     //para mostrar el el mini-rostro en la parte superior izquierda, encima de la imagen
                     _miniTexture = gl::Texture(fromOcv(img));
                     
@@ -108,8 +117,28 @@ void AICamera::update(){
                     }
                 }
             }
+            
+            if (mIsPredicting) {
+                enableTraining(false);
+                int claseUsuario;
+                cv::Mat img(toOcv(_capture.getSurface()));
+                AIStatus sTemp= processing_image(img);
+                if (sTemp == AI_STATUS_OK)
+                {
+                    Eigen::RowVectorXd tImagen;
+                    if(getElapsedSeconds() - mSegundos > 1)
+                    {
+                        claseUsuario =  mBuilder.predict(tImagen);
+                        mSegundos = getElapsedSeconds();
+                    }
+                }
+            }
         }
     }
+}
+
+void AICamera::enablePredicting(bool enable){
+    mIsPredicting = enable;
 }
 
 void AICamera::enableTraining(bool enable){

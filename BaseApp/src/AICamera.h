@@ -13,6 +13,7 @@
 #include "cinder/Capture.h"
 #include "cinder/gl/Texture.h"
 
+#include "AIBuilder.h"
 #include "AIDataSet.h"
 
 using namespace ci;
@@ -33,8 +34,18 @@ public:
     
     
     void enableTraining(bool);
-    
+    void enablePredicting(bool);
+    //////////////////////////////////////
+    //      Artificial Intelligence     //
+    //////////////////////////////////////
+    AIBuilder mBuilder;
+    AIPca mPca;
+    AILda mLda;
+    AINearestNeighbor mNN;
     AIDataSet mDataSet;
+    AIEuclideanDistance mED;
+    
+    
     ci::Capture _capture;
     cv::CascadeClassifier       _classifier;
     gl::Texture _texture;
@@ -44,6 +55,7 @@ public:
     int mContadorUsuario;
     double mSegundos;
     bool mIsTraining;
+    bool mIsPredicting;
 };
 
 #endif

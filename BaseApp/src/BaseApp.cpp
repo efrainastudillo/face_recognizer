@@ -20,8 +20,7 @@
 #include "AIFont.h"
 #include "AITextInput.h"
 #include "AIButton.h"
-#include "AIDataSet.h"
-#include "AIBuilder.h"
+
 
 using namespace ci;
 using namespace ci::app;
@@ -43,15 +42,7 @@ public:
 	gl::Texture mImage;
     std::string mMessage;
     
-    //////////////////////////////////////
-    //      Artificial Intelligence     //
-    //////////////////////////////////////
-    AIBuilder mBuilder;
-    AIPca mPca;
-    AILda mLda;
-    AINearestNeighbor mNN;
-    AIDataSet mDataSet;
-    AIEuclideanDistance mED;
+    
     
     AIButton mTrainButton,mBuildButton,mPredictButton;
     AIButton mSaveDataButton,mSaveModelButton;
@@ -76,7 +67,7 @@ void TutorialApp::prepareSettings( Settings *settings )
 void TutorialApp::setup()
 {
 	mImage = gl::Texture( loadImage( loadResource( BACKGROUND_IMAGE ) ) );
-    mFont.initialize();    //initilize camera
+    mFont.initialize();    //initialize camera
     
     int top = getWindowHeight() * 0.15f;
     int bottom = getWindowHeight() * 0.8f;
@@ -100,15 +91,11 @@ void TutorialApp::setup()
     mSaveModelButton.setPosition(ci::Rectf(left + width_rect*0.5,top + height_rect*1.53,width_rect*0.45,40));
     
     mTextInput.initialize();
-    mCamera.mDataSet.loadDataFromFile(__TRAINING_PATH__);
-    mCamera.mDataSet.loadNamesFromFile(__TRAINING_NAMES_PATH__);
+    //mCamera.mDataSet.loadDataFromFile(__TRAINING_PATH__);
+    //mCamera.mDataSet.loadNamesFromFile(__TRAINING_NAMES_PATH__);
     mCamera.initialize();// camera initilization should be before to load names and data from files
     
-    //===============     Artificial Intelligence       ================//
-    mLda = AILda();
-    mED = AIEuclideanDistance();
-    mNN = AINearestNeighbor(mED);
-    mBuilder = AIBuilder(mLda, mNN);
+
     
     
     mMessage = "! Bienvenido !";
