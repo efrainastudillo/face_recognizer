@@ -154,15 +154,15 @@ void TutorialApp::mouseDown(cinder::app::MouseEvent event){
     }
     else if(mBuildButton.isEvent())
     {
-        //mCamera.mDataSet.loadData();
+		mCamera.mDataSet.loadData();
         console()<< "Data Size: "<<mCamera.mDataSet.data.size()<<std::endl;
         console()<< "Labels Size: "<<mCamera.mDataSet.labels.size()<<std::endl;
         
-        //mBuilder.compute(mCamera.mDataSet.data, mCamera.mDataSet.labels);
+        mBuilder.compute(mCamera.mDataSet.data, mCamera.mDataSet.labels);
     }
     else if (mPredictButton.isEvent())
     {
-    
+			//mBuilder.
     }
     else if (mSaveDataButton.isEvent())
     {

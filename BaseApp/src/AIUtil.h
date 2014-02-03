@@ -105,7 +105,7 @@ inline static std::vector<AIModel::DataLabel> uniqueFromVector(const AIModel::Ei
 #define __TRAINING_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/BaseApp/resources/images_training.csv"
 #define __TRAINING_NAMES_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/BaseApp/resources/names_training.csv"
 #define __TEST_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/BaseApp/resources/images_test.csv"
-#define __MODEL_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/FaceRecognizer/trainingModel/"
+#define __MODEL_PATH__ "/Users/efrainastudillo/Documents/Development/XcodeProjects/FaceRecognizer/BaseApp/resources/"
 
 #elif __PETER__ //Pedro Lucas Path
 
@@ -113,10 +113,10 @@ inline static std::vector<AIModel::DataLabel> uniqueFromVector(const AIModel::Ei
 
 #define __IMAGES_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/images/"
 #define __HAARCASCADE_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/data/haarcascade_frontalface_alt.xml"
-#define __TRAINING_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/testingFiles/images_training.csv"
-#define __TRAINING_NAMES_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/testingFiles/images_names_training.csv"
+#define __TRAINING_PATH__ "D:/AIProject/face_recognizer/BaseApp/resources/images_training.csv"
+#define __TRAINING_NAMES_PATH__ "D:/AIProject/face_recognizer/BaseApp/resources/images_names_training.csv"
 #define __TEST_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/testingFiles/images_test.csv"
-#define __MODEL_PATH__ "D:/AIProject/face_recognizer/FaceRecognizer/trainingModel/"
+#define __MODEL_PATH__ "D:/AIProject/face_recognizer/BaseApp/resources/"
 
 #elif __GERMAN__ // German Villalba Path
 #define __IMAGES_PATH__ "/path/german/villalba"

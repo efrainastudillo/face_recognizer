@@ -43,7 +43,7 @@ AIModel::TrainingModel AINearestNeighbor::compute(const Eigen::MatrixXd& X, cons
 AIModel::DataLabel AINearestNeighbor::predict(const Eigen::RowVectorXd& X){
 	AIModel::TrainingModel trainingModel;
 
-	READ_AIMODEL(trainingModel, __TRAINING_PATH__);
+	READ_AIMODEL(trainingModel, __MODEL_PATH__);
 
 	double minDist = std::numeric_limits<double>::max();
 	//AIModel::DataLabel minClass = "None";

@@ -78,9 +78,9 @@ int main(int argc, const char * argv[])
 	d.save_images(pathTraining);
      */
 	
-	//AITraining training;
+	AITraining training;
 
-	//training.Test(pathTraining);
+	training.Test(pathTraining);
     
     //std::cout<< M.inverse() <<std::endl;
 
