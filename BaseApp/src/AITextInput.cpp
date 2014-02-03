@@ -16,14 +16,6 @@ void AITextInput::initialize(){
     ci::gl::TextureFont::Format f;
 	f.enableMipmapping( true );
 	mTextureFont = ci::gl::TextureFont::create( customFont, f );
-    
-    // scene
-	mSceneMatrix = mSceneDestMatrix = Matrix44f::identity();
-    
-    // camera
-	mCamDist = 600.0f;
-	mCam.setPerspective( 75.0f, getWindowAspectRatio(), 0.1f, 5000.0f );
-	mCam.lookAt( Vec3f( 0.0f, 0.0f, mCamDist ), Vec3f::zero(), Vec3f::yAxis() );
 }
 
 void AITextInput::keyDown( KeyEvent event ){
@@ -32,23 +24,48 @@ void AITextInput::keyDown( KeyEvent event ){
 	string specialChars = " .,:;/?\\!@#%^&*()-_=+[]<>'\""; // the remaining characters that the font provides
 	
 	if( event.getCode() == KeyEvent::KEY_BACKSPACE )
+    {
 		removeChar();
+        console()<< "remove characterl"<<std::endl;
+    }
 	else if( isalnum( ch ) )
+    {
 		addChar( ch );
+        console()<< "addded characeter"<<std::endl;
+    }
 	else if( specialChars.find( ch ) != -1 )
+    {
 		addChar( ch );
+        console()<< "especial character"<<std::endl;
+    }
 }
-
+std::string AITextInput::getText(){
+    std::string name = "";
+    for( vector<Character>::iterator it = mCharacters.begin(); it != mCharacters.end(); ++it )
+		name.append(it->mChar);
+    return name;
+}
 void AITextInput::update(){
 
 }
 void AITextInput::draw(){
-
+    
+    ci::gl::color(1.0, 1.0, 1.0);
+    /*mTextureFont->drawString( "Hello World", ci::Vec2d(100,200),
+                          ci::gl::TextureFont::DrawOptions().scale( 1.0 ).pixelSnap( true ) );*/
+	for( vector<Character>::iterator it = mCharacters.begin(); it != mCharacters.end(); ++it )
+		it->draw();
+    
 }
 
 void AITextInput::addChar( char c ){
+    c = tolower( c ); // Alphabet-IV.tff seems to be missing some capital letters (strange, since it's an all-caps font)
+	mCharacters.push_back( Character( mTextureFont, string( &c, 1 ) ,mCharacters.size()) );
+    //console()<< "size: "<<mCharacters.size()<<std::endl;
 
 }
 void AITextInput::removeChar(){
-
+    if( ! mCharacters.empty() ) {
+		mCharacters.pop_back();
+	}
 }

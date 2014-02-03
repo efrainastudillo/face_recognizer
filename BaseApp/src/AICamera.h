@@ -32,6 +32,9 @@ public:
         return this->mDataSet;
     };
     
+    void setNombreUser(std::string nombre){
+        mNombreUser = nombre;
+    };
     
     void enableTraining(bool);
     void enablePredicting(bool);
@@ -50,12 +53,15 @@ public:
     cv::CascadeClassifier       _classifier;
     gl::Texture _texture;
     gl::Texture _miniTexture;
-    
+    std::string mNombreUser;
     int mContador;
     int mContadorUsuario;
     double mSegundos;
     bool mIsTraining;
     bool mIsPredicting;
+    
+    bool mSaved;
+    bool mPredicted;
 };
 
 #endif

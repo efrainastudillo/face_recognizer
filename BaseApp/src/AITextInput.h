@@ -35,19 +35,17 @@ public:
 	
 	void addChar( char c );
 	void removeChar();
-    
+    std::string getText();
+    void clear(){
+        mCharacters.clear();
+    }
     void initialize();
     
     vector<Character>	mCharacters;
 	list<Character>		mDyingCharacters;
     string				mText;
-	
-	CameraPersp			mCam;
-	float				mCamDist;
     
     ci::gl::TextureFontRef  mTextureFont;
-    Anim<Matrix44f>         mSceneMatrix;
-	Matrix44f               mSceneDestMatrix;
 };
 
 #endif /* defined(__BaseApp__AITextInput__) */

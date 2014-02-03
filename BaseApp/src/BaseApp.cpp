@@ -43,7 +43,7 @@ public:
     std::string mMessage;
     
     
-    
+    bool mBuilded;
     AIButton mTrainButton,mBuildButton,mPredictButton;
     AIButton mSaveDataButton,mSaveModelButton;
 	AICamera mCamera;
@@ -68,7 +68,7 @@ void TutorialApp::setup()
 {
 	mImage = gl::Texture( loadImage( loadResource( BACKGROUND_IMAGE ) ) );
     mFont.initialize();    //initialize camera
-    
+    mBuilded = false;
     int top = getWindowHeight() * 0.15f;
     int bottom = getWindowHeight() * 0.8f;
     int left = getWindowWidth()/2 + 60;
@@ -95,10 +95,7 @@ void TutorialApp::setup()
     //mCamera.mDataSet.loadNamesFromFile(__TRAINING_NAMES_PATH__);
     mCamera.initialize();// camera initilization should be before to load names and data from files
     
-
-    
-    
-    mMessage = "! Bienvenido !";
+    mMessage = "Welcome, Please insert your name and Capture";
     getWindow()->getSignalDisplayChange().connect( std::bind( &TutorialApp::displayChange, this ) );
 	
 }
@@ -115,17 +112,8 @@ void TutorialApp::keyDown(ci::app::KeyEvent event){
     {
         exit(EXIT_SUCCESS);
     }
-    if(event.getCode() == KeyEvent::KEY_z)
-    {
-        
-    }
-    if(event.getCode() == KeyEvent::KEY_s)
-    {
-        
-    }
-    if(event.getCode() == KeyEvent::KEY_f){
-        setFullScreen(!isFullScreen());
-    }
+    
+    mTextInput.keyDown(event);
 }
 
 void TutorialApp::mouseDown(cinder::app::MouseEvent event){
@@ -137,15 +125,20 @@ void TutorialApp::mouseDown(cinder::app::MouseEvent event){
     
     if (mTrainButton.isEvent())
     {
+        mCamera.setNombreUser(mTextInput.getText());
+        mTextInput.clear();
         mCamera.enableTraining(true);
     }
     else if(mBuildButton.isEvent())
     {
+        mCamera.mSaved = false;
 		mCamera.mDataSet.loadData();
         console()<< "Data Size: "<<mCamera.mDataSet.data.size()<<std::endl;
         console()<< "Labels Size: "<<mCamera.mDataSet.labels.size()<<std::endl;
         
         mCamera.mBuilder.compute(mCamera.mDataSet.data, mCamera.mDataSet.labels);
+        
+        mBuilded = true;
     }
     else if (mPredictButton.isEvent())
     {
@@ -158,7 +151,7 @@ void TutorialApp::mouseDown(cinder::app::MouseEvent event){
     }
     else if (mSaveModelButton.isEvent())
     {
-        
+        LOG(mTextInput.getText())
     }
 }
 void TutorialApp::mouseMove(cinder::app::MouseEvent event){
@@ -171,6 +164,7 @@ void TutorialApp::mouseMove(cinder::app::MouseEvent event){
 void TutorialApp::update()
 {
     mCamera.update();
+    mTextInput.update();
 }
 
 void TutorialApp::draw()
@@ -214,9 +208,26 @@ void TutorialApp::draw()
     mFont.draw("Training Data", ci::Vec2d(getWindowWidth()/2 + 50 + gap,top + gap*2.6),0.5f);
     mFont.draw("Building Model", ci::Vec2d(getWindowWidth()/2 + 50 + gap,top + height_rect + gap*2.6),0.5f);
     mFont.draw("Predicting", ci::Vec2d(getWindowWidth()/2 + 50 + gap,top + height_rect*2 + gap*2.6),0.5f);
+    if (mCamera.mIsTraining) {
+        mMessage = "Saving...keep your face in front of the camera,please";
+    }
+    else if (mCamera.mPredicted) {
+        mMessage = "You Are: " + mCamera.mNombreUser;
+    }else if(mCamera.mSaved)
+    {
+        mMessage = "Saved!. Another one? or You wanna to Build model?";
+    }
+    else if(mBuilded)
+    {
+        mMessage = "Model was successfully Built, now you can proceed to recognise faces";
+    }
+    else{
+        
+        mMessage = "Welcome,Insert your name and then Capture. Or build model if you want";
+    }
+    mFont.draw(mMessage, ci::Vec2d(left - 60,bottom + gap*5), 0.5f);
     
-    mFont.draw("Mensaje General", ci::Vec2d(left + gap ,bottom + gap*5), 0.8f);
-    
+    mTextInput.draw();
     gl::disableAlphaBlending();
 }
 

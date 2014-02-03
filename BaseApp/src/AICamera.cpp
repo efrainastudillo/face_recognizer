@@ -23,8 +23,10 @@ void AICamera::initialize(){
     
     
     //initilialize training
+    mSaved = false;
     mIsPredicting = false;
     mIsTraining = false;
+    mPredicted = false;
     mContador = 0;
     mSegundos = 0;
     mContadorUsuario = mDataSet.getLastIndex();
@@ -57,32 +59,34 @@ void AICamera::draw(ci::Rectf bounds){
 }
 
 AIStatus AICamera::processing_image(cv::Mat &img){
+    cv::Mat tempImg = img.clone();
      //convert captured image to gray scale and equalize
-     if (img.data == NULL) {
+     if (tempImg.data == NULL) {
          LOG("Image not Found")
          return AI_STATUS_ERROR;
      }
-    if(img.channels() > 1)
-        cv::cvtColor(img, img, CV_BGR2GRAY);
-     cv::equalizeHist(img, img);
+    if(tempImg.channels() > 1)
+        cv::cvtColor(tempImg, tempImg, CV_BGR2GRAY);
+     cv::equalizeHist(tempImg, tempImg);
     
      //create a vector array to store the face found
      std::vector<cv::Rect> faces;
      
      //find faces and store them in the vector array
-     _classifier.detectMultiScale(img, faces,1.1, 2, CV_HAAR_FIND_BIGGEST_OBJECT|CV_HAAR_SCALE_IMAGE, cv::Size(150, 160));
-     LOG("Faces detected: "<<faces.size())
+     _classifier.detectMultiScale(tempImg, faces,1.1, 2, CV_HAAR_FIND_BIGGEST_OBJECT|CV_HAAR_SCALE_IMAGE, cv::Size(150, 160));
+    cv::Mat roi;
      //extract roi containing the face if there more than one, only the first is keeping in memory
      //this can be manipulate capturing the image more accurate posible
-     if(faces.size()>0){
+     if( faces.size()>0 && faces[0].x >= 0 && faces[0].y>=0 && faces[0].width<tempImg.cols && faces[0].height < tempImg.rows){
          cv::Point pt1(faces[0].x, faces[0].y);
          cv::Point pt2(faces[0].x + faces[0].width, faces[0].y + faces[0].height);
-         img=img(cv::Rect(pt1,pt2));
+         roi=tempImg(cv::Rect(pt1,pt2));
      }else{
          return AIStatus::AI_STATUS_FACE_NOT_FOUND;
      }
+    LOG("Faces detected: "<<faces.size())
      //resize the image to 100X100 to obtain a vector of size equal 10000 to increase performance
-     cv::resize(img, img, cv::Size(80,80));
+     cv::resize(roi, img, cv::Size(80,80));
     
     return AIStatus::AI_STATUS_OK;
 }
@@ -111,9 +115,10 @@ void AICamera::update(){
                         mSegundos = getElapsedSeconds();
                     }else if ( mContador == 10)
                     {
-                        mDataSet.saveUser(mContadorUsuario, "Efrain Astudillo");
+                        mDataSet.saveUser(mContadorUsuario, mNombreUser);
                         mContador = 0;
                         mContadorUsuario = mContadorUsuario + 1;
+                        mSaved = true;
                         mIsTraining = false;
                     }
                 }
@@ -123,6 +128,7 @@ void AICamera::update(){
                 enableTraining(false);
                 int claseUsuario;
                 cv::Mat img(toOcv(_capture.getSurface()));
+                cv::cvtColor(img, img, CV_8UC1);
                 AIStatus sTemp= processing_image(img);
                 if (sTemp == AI_STATUS_OK)
                 {
@@ -131,13 +137,13 @@ void AICamera::update(){
                     
                     Eigen::RowVectorXd tImagen(img.cols*img.rows);
                     CV2EIGEN(img, tImagen);
-                    if(getElapsedSeconds() - mSegundos > 1)
-                    {
-                        claseUsuario =  mBuilder.predict(tImagen);
-                        LOG(mDataSet.getNameById(claseUsuario))
-                        mSegundos = getElapsedSeconds();
-                    }
+                    claseUsuario =  mBuilder.predict(tImagen);
+                    mNombreUser = mDataSet.getNameById(claseUsuario);
+                    LOG(claseUsuario)
+                        //mSegundos = getElapsedSeconds();
+                    mPredicted = true;
                 }
+                enablePredicting(false);
             }
         }
     }

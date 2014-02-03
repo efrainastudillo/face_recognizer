@@ -19,7 +19,7 @@
 class Character {
 public:
 	Character() {}
-	Character( ci::gl::TextureFontRef textureFont, std::string character,  ci::Matrix44f matrix );
+	Character( ci::gl::TextureFontRef textureFont, std::string character,int);
 	
 	void	animIn( ci::Timeline &timeline,  ci::Matrix44f matrix );
 	void	animOut( ci::Timeline &timeline,  ci::Matrix44f matrix );
@@ -29,7 +29,8 @@ public:
 	ci::Rectf		getKernBounds() const;
 	bool            isDead() const;
 	ci::Matrix44f	getDestMatrix() const;
-	
+	ci::Vec2d position;
+    std::string					mChar;
 protected:
 	void	onAnimOut();
 	
@@ -40,7 +41,7 @@ protected:
 	
 	ci::Matrix44f				mDestMatrix;
 	
-	std::string					mChar;
+	
 	
 	ci::gl::TextureFontRef		mTextureFont;
 	ci::Rectf					mKernBounds;
