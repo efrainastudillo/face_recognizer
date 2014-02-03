@@ -36,6 +36,10 @@ void AIDataSet::loadData(){
     LOG(labels.size())
 }
 
+std::string AIDataSet::getNameById(int idx){
+    return _usuarios.find(idx)->second;
+}
+
 void AIDataSet::loadDataFromFile(std::string filename){
     std::ifstream data_images(filename);
     if (!data_images.is_open()) {

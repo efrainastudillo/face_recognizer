@@ -22,19 +22,7 @@ public:
 
     AIDataSet();
     ~AIDataSet();
-    /*
-    AIStatus read_images(std::string);
-    
-    
-    //    Save images to a file. Each image is contained in a row of the file
-     
-	AIStatus save_images(std::string);
-    
-    
-    //    Load csv file with the images previously saved
-     
-    AIStatus load_data(std::string);
-    */
+
     void saveImage(int index,cv::Mat);
     void saveUser(int index,std::string nombre);
     void saveDataToFile(std::string filename);
@@ -43,6 +31,7 @@ public:
     void loadNamesFromFile(std::string filename);
     
     int getLastIndex();
+    std::string getNameById(int idx);
     
     void loadData();
     

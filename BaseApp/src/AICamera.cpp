@@ -125,10 +125,11 @@ void AICamera::update(){
                 AIStatus sTemp= processing_image(img);
                 if (sTemp == AI_STATUS_OK)
                 {
-                    Eigen::RowVectorXd tImagen;
+                    Eigen::RowVectorXd tImagen(img.cols*img.rows);
                     if(getElapsedSeconds() - mSegundos > 1)
                     {
                         claseUsuario =  mBuilder.predict(tImagen);
+                        mDataSet.getNameById(claseUsuario);
                         mSegundos = getElapsedSeconds();
                     }
                 }

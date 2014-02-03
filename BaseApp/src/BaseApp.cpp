@@ -145,7 +145,7 @@ void TutorialApp::mouseDown(cinder::app::MouseEvent event){
         console()<< "Data Size: "<<mCamera.mDataSet.data.size()<<std::endl;
         console()<< "Labels Size: "<<mCamera.mDataSet.labels.size()<<std::endl;
         
-        mBuilder.compute(mCamera.mDataSet.data, mCamera.mDataSet.labels);
+        mCamera.mBuilder.compute(mCamera.mDataSet.data, mCamera.mDataSet.labels);
     }
     else if (mPredictButton.isEvent())
     {
